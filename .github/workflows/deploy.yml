@@ -1,0 +1,35 @@
+# This workflow tests the code in a production-like environment on our internal dev machine.
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - "**"
+  pull_request:
+  release:
+    types:
+      - edited
+      - released
+
+jobs:
+  build:
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # setuptools_scm needs this to calculate the version
+
+      - name: Build Package
+        run: |
+          tar -zcvf null_router.tgz soar_app
+
+  deploy:
+    if: github.event_name == 'pull_request'
+    needs: build
+    concurrency: deploy
+
+    steps:
+      - name: Post to Splunk SOAR API
+        run: |
+          deploy.sh
