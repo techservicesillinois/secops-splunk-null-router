@@ -32,4 +32,4 @@ jobs:
     steps:
       - name: Post to Splunk SOAR API
         run: |
-          deploy.sh
+          deploy.py
