@@ -1,0 +1,95 @@
+{
+    "appid": "77d5ad43-87ba-4ef8-adf4-012670ca37ba",
+    "name": "soar_null_router",
+    "description": "Posts to the null router to block CIDRs",
+    "type": "network security",
+    "product_vendor": "Tech Services Illinois",
+    "logo": "soar_null_router.png",
+    "logo_dark": "soar_null_router_dark.png",
+    "product_name": "null_router",
+    "python_version": "3",
+    "product_version_regex": ".*",
+    "publisher": "Cybersecurity",
+    "license": "Copyright (c) Cybersecurity, 2022",
+    "app_version": "1.3.0",
+    "utctime_updated": "2022-04-21T16:25:33.767680Z",
+    "package_name": "phantom_soar_null_router",
+    "main_module": "soar_null_router_connector.py",
+    "min_phantom_version": "5.3.1.84890",
+    "app_wizard_version": "1.0.0",
+    "configuration": {},
+    "actions": [
+        {
+            "action": "test connectivity",
+            "identifier": "test_connectivity",
+            "description": "Validate the asset configuration for connectivity using supplied configuration",
+            "verbose": "",
+            "type": "test",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "block",
+            "identifier": "block",
+            "description": "Block suspicious CIDR in BHR / null router",
+            "verbose": "",
+            "type": "contain",
+            "read_only": false,
+            "parameters": {
+                "cidr": {
+                    "order": 0,
+                    "description": "CIDR to block",
+                    "data_type": "string",
+                    "contains": [
+                        "cidr"
+                    ],
+                    "primary": true,
+                    "required": true,
+                    "allow_list": false,
+                    "name": "cidr"
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "column_name": "status",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        }
+    ],
+    "pip3_dependencies": {
+        "pypi": [
+            {
+                "module": "bhr-client"
+            }
+        ]
+    },
+    "custom_made": true,
+    "directory": "soar_null_router_77d5ad43-87ba-4ef8-adf4-012670ca37ba",
+    "version": 1,
+    "appname": "-",
+    "executable": "spawn3",
+    "disabled": false,
+    "copied_from_id": 186,
+    "copied_from_version": "1.2.0"
+}
