@@ -1,4 +1,4 @@
-#!/home/shere/.pyenv/shims/python
+#!/usr/bin/env python
 
 import json
 import base64
