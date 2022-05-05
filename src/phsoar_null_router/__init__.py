@@ -1,0 +1,2 @@
+# Testing
+thing = 'foo'

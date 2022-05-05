@@ -7,7 +7,7 @@ import os
 
 file_contents = open('soar_null_router.tgz', 'rb').read()
 encoded_contents = base64.b64encode(file_contents)
-payload = {'app': encoded_contents.decode('utf-8')}
+payload = {'app': encoded_contents.decode('ascii')}
 headers = {'ph-auth-token': os.environ['SOAR_TOKEN']}
 result = requests.post('https://automate-illinois.soar.splunkcloud.com/rest/app',
                 headers=headers,
