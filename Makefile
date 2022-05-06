@@ -5,7 +5,6 @@ all: build
 build: soar_null_router.tgz
 
 soar_null_router.tgz:
-#	python -m compileall -b src
 	tar -zcvf $@ -C src .
 
 deploy: soar_null_router.tgz

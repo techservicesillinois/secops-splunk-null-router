@@ -1,5 +1,5 @@
 {
-    "appid": "3dd9f34e-cff1-46ae-bfe1-f70810c97480",
+    "appid": "fceeaac1-8f96-46d6-9c3b-896e363eb004",
     "name": "soar_null_router",
     "description": "Posts to the null router to block CIDRs",
     "type": "network security",
@@ -11,7 +11,7 @@
     "product_version_regex": ".*",
     "publisher": "Cybersecurity",
     "license": "Copyright (c) Cybersecurity, 2022",
-    "app_version": "2.0.3",
+    "app_version": "2.1.4",
     "utctime_updated": "2022-05-02T16:29:53.010161Z",
     "package_name": "phantom_soar_null_router",
     "main_module": "soar_null_router_connector.py",

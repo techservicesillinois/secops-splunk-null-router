@@ -22,7 +22,7 @@ jobs:
 
       - name: Build Package
         run: |
-          tar -zcvf null_router.tgz soar_app
+          make build
 
   deploy:
     if: github.event_name == 'pull_request'
@@ -32,4 +32,4 @@ jobs:
     steps:
       - name: Post to Splunk SOAR API
         run: |
-          deploy.py
+          make deploy
