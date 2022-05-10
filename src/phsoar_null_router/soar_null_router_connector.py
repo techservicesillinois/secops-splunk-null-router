@@ -188,12 +188,14 @@ class Soar_Null_RouterConnector(BaseConnector):
         # return action_result.set_status(phantom.APP_ERROR, "Action not yet implemented")
     
     def _handle_block(self, param):
-        
+        action_result = self.add_action_result(ActionResult(dict(param)))
         cidr = phantom.get_req_value(param, "cidr")
         #raise Exception(f"*********{cidr_conf}**********")
         #self.debug_print(dir(phantom))
         #cidr = phantom.get_string(cidr_conf)
-        return self._bhr.block(cidr=cidr, source='SOAR', why='Appears in our suspicious event list.')
+        result = self._bhr.block(cidr=cidr, source='SOAR', why='Appears in our suspicious event list.')
+
+        return action_result.set_status(phantom.APP_SUCCESS)
 
     def handle_action(self, param):
         ret_val = phantom.APP_SUCCESS
