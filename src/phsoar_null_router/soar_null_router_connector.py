@@ -193,7 +193,9 @@ class Soar_Null_RouterConnector(BaseConnector):
         #raise Exception(f"*********{cidr_conf}**********")
         #self.debug_print(dir(phantom))
         #cidr = phantom.get_string(cidr_conf)
-        return self._bhr.block(cidr=cidr, source='SOAR', why='Appears in our suspicious event list.')
+        result = self._bhr.block(cidr=cidr, source='SOAR', why='Appears in our suspicious event list.')
+
+        return (phantom.APP_SUCCESS, result)
 
     def handle_action(self, param):
         ret_val = phantom.APP_SUCCESS
