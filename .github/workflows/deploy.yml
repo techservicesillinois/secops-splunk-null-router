@@ -1,27 +1,16 @@
 # This workflow tests the code in a production-like environment on our internal dev machine.
-name: deploy
+name: CI/CD
 
-on:
-  push:
-    branches:
-      - main
-    tags-ignore:
-      - "**"
-  pull_request:
-  release:
-    types:
-      - edited
-      - released
+on: [push, pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Build Package
-        run: |
-          make build
+    - uses: actions/checkout@v2
+    - name: Build Package
+      run: |
+        make build
 
   deploy:
     # TODO: This should be on merge to main not on pull request creation
