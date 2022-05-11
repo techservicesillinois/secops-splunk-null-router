@@ -15,16 +15,16 @@ on:
 
 jobs:
   build:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # setuptools_scm needs this to calculate the version
 
       - name: Build Package
         run: |
           make build
 
   deploy:
+    # TODO: This should be on merge to main not on pull request creation
     if: github.event_name == 'pull_request'
     needs: build
     concurrency: deploy
