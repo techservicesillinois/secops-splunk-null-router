@@ -14,9 +14,7 @@ jobs:
 
   deploy:
     # TODO: This should be on merge to main not on pull request creation
-    if: github.event_name == 'pull_request'
     needs: build
-    concurrency: deploy
 
     steps:
       - name: Post to Splunk SOAR API
