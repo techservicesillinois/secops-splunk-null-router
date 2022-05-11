@@ -11,7 +11,7 @@
   "product_version_regex": ".*",
   "publisher": "Cybersecurity",
   "license": "Copyright (c) Cybersecurity, 2022",
-  "app_version": "2.4.4",
+  "app_version": "2.4.5",
   "utctime_updated": "2022-05-10T20:00:55.716700Z",
   "package_name": "phantom_soar_null_router",
   "main_module": "soar_null_router_connector.py",
@@ -92,12 +92,10 @@
       }
     ]
   },
-  "custom_made": true,
+  "custom_made": false,
   "directory": "soar_null_router_fceeaac1-8f96-46d6-9c3b-896e363eb004",
   "version": 1,
   "appname": "-",
   "executable": "spawn3",
-  "disabled": false,
-  "copied_from_id": 209,
-  "copied_from_version": "2.3.4"
+  "disabled": false
 }
