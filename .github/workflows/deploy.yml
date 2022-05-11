@@ -14,6 +14,7 @@ jobs:
 
   deploy:
     # TODO: This should be on merge to main not on pull request creation
+    runs-on: ubuntu-latest
     needs: build
 
     steps:
