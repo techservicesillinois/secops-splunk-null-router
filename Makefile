@@ -3,6 +3,12 @@ SRCS_DIR:=src/phsoar_null_router
 SRCS:=$(shell find $(SRCS_DIR) -type f)
 TAG_FILES:=$(addprefix $(SRCS_DIR)/, soar_null_router.json __init__.py)
 
+ifeq (tag, $(GITHUB_REF_TYPE))
+	TAG?=$(GITHUB_REF_NAME)
+else
+	TAG?=0.0.0
+endif
+
 all: build
 
 build: soar_null_router.tgz
@@ -12,8 +18,8 @@ soar_null_router.tgz: .tag $(SRCS)
 
 version: .tag
 .tag: $(TAG_FILES)
-	echo version $$GITHUB_REF_NAME
-	sed -i s/GITHUB_TAG/$(GITHUB_REF_NAME)/ $^
+	echo version $(TAG)
+	sed -i s/GITHUB_TAG/$(TAG)/ $^
 	touch $@
 
 deploy: soar_null_router.tgz
