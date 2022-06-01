@@ -33,12 +33,10 @@ ssh/id_rsa: ssh
 	echo "$$PYTEST_TEMP_RO_DEPLOY_KEY" > $@
 	chmod 400 $@
 
-venv: export GIT_SSH_COMMAND="/usr/bin/ssh -i $(PWD)/ssh/id_rsa"
+venv: export GIT_SSH_COMMAND=/usr/bin/ssh -i $(PWD)/ssh/id_rsa
 venv: ssh/id_rsa
 	python -m venv venv
 	$(VENV_PYTHON) -m pip install wheel
-	export > env.makefile.txt
-	$(VENV_PYTHON) -m pip install git+ssh://git@github.com/edthedev/pytest-splunk-soar-connectors.git@d05e170c5c3f7592d33110e148f4ccbaa6425eeb
 	$(VENV_PYTHON) -m pip install -r requirements-test.txt
 
 test: venv
