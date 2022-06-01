@@ -39,6 +39,10 @@ venv: ssh/id_rsa
 	$(VENV_PYTHON) -m pip install wheel
 	$(VENV_PYTHON) -m pip install -r requirements-test.txt
 
+requirements-test.txt: requirements-test.in
+	rm -rf .requirements.venv
+	
+
 test: venv
 	$(VENV_PYTHON) -m pytest
 	
