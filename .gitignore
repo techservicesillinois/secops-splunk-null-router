@@ -132,3 +132,6 @@ dmypy.json
 
 # don't check in tarballs!
 *.tgz
+
+# build artifacts
+ssh

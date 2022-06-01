@@ -10,8 +10,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: Test
       run: |
-        echo "TODO: Uncomment this after pytest-splunk-soar-connectors is available on PyPI"
-        # make test
+        make test
+      env:
+        PYTEST_TEMP_RO_DEPLOY_KEY: ${{ secrets.PYTEST_TEMP_RO_DEPLOY_KEY }}
     - name: Build Package
       run: |
         make build
@@ -21,3 +22,5 @@ jobs:
       env:
         SOAR_TOKEN: ${{ secrets.CICD_GITHUB_AUTOMATION }}
         SOAR_URL: ${{ secrets.SOAR_URL }}
+      
+        
