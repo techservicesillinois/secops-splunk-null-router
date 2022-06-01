@@ -1,6 +1,8 @@
 # Contributing
 
-TODO: Link to the release instructions.
+## Release Instructions
+    1. Merge an update to main with a new release number in the .json file. 
+    2. Have someone from SecOps change the version in the Splunk SOAR interface.
 
 ```shell
 python -m venv venv
@@ -16,3 +18,6 @@ pip install -r requirements-test.txt
 export BHR_HOST="https://nr-test.techservices.illinois.edu"
 export BHR_TOKEN=
 ```
+
+## VCR.py is used for testing http requests 
+https://vcrpy.readthedocs.io/en/latest/
