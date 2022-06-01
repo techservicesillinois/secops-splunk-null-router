@@ -3,6 +3,7 @@ SRCS_DIR:=src/phsoar_null_router
 SRCS:=$(shell find $(SRCS_DIR) -type f)
 TAG_FILES:=$(addprefix $(SRCS_DIR)/, soar_null_router.json __init__.py)
 VENV_PYTHON:=venv/bin/python
+VENV_REQS:=.requirements.venv
 
 ifeq (tag, $(GITHUB_REF_TYPE))
 	TAG?=$(GITHUB_REF_NAME)
@@ -36,18 +37,22 @@ ssh/id_rsa: ssh
 venv: export GIT_SSH_COMMAND=/usr/bin/ssh -i $(PWD)/ssh/id_rsa
 venv: ssh/id_rsa
 	python -m venv venv
-	$(VENV_PYTHON) -m pip install wheel
 	$(VENV_PYTHON) -m pip install -r requirements-test.txt
 
 requirements-test.txt: requirements-test.in
-	rm -rf .requirements.venv
-	
+	rm -rf $(VENV_REQS)
+	python -m venv $(VENV_REQS)
+	$(VENV_REQS)/bin/python -m pip install -r $^
+	$(VENV_REQS)/bin/python -m pip freeze -qqq > $@
 
 test: venv
 	$(VENV_PYTHON) -m pytest
 	
 clean:
-	rm -rf venv ssh
+	rm -rf venv ssh $(VENV_REQS)
 	rm -f soar_null_router.tgz .tag
 	-find src -type d -name __pycache__ -exec rm -fr "{}" \;
 	git checkout -- $(TAG_FILES)
+
+force-clean: clean
+	rm -f requirements-test.txt
