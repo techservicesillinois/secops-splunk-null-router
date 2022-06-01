@@ -11,6 +11,8 @@ jobs:
     - name: Test
       run: |
         make test
+      env:
+        PYTEST_TEMP_RO_DEPLOY_KEY: ${{ secrets.PYTEST_TEMP_RO_DEPLOY_KEY }}
     - name: Build Package
       run: |
         make build
@@ -20,3 +22,5 @@ jobs:
       env:
         SOAR_TOKEN: ${{ secrets.CICD_GITHUB_AUTOMATION }}
         SOAR_URL: ${{ secrets.SOAR_URL }}
+      
+        
