@@ -4,7 +4,6 @@ beautifulsoup4
 bhr-client
 # Testing dependencies
 pytest
-vcrpy
 
 # TODO: Uncomment after it is available on PyPI:
 #pytest-splunk-soar-connectors
