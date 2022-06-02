@@ -6,7 +6,7 @@
 
 ## Setup
 
-Python version should be set to 3.9 to match Splunk SOAR.
+Python version should be set to 3.9 to match Splunk SOAR:
 
 ```shell
 pyenv install 3.9.0
