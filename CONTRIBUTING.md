@@ -4,19 +4,41 @@
     1. Merge an update to main with a new release number in the .json file. 
     2. Have someone from SecOps change the version in the Splunk SOAR interface.
 
+## Setup
+
+Python version should be set to 3.9 to match Splunk SOAR.
+
 ```shell
-python -m venv venv
+pyenv install 3.9.0
+pyenv local 3.9.0
+```
+
+You can verify the above with `pyenv local`:
+```
+$ pyenv local
+3.9.0 (set by /home/delaport/src/secops-splunk-null-router/.python-version)
+```
+
+```shell
+make clean venv
 source venv/bin/activate
-pip install -r requirements-test.txt
 ```
 
 > You may need to `pip install wheel` then re-run
 > `pip install -r requirements-test.txt` to clear a `bdist_wheel` error message.
 
+For integration  testing, set BRH environment variables as used by `bhr-client`.
 
 ```shell
 export BHR_HOST="https://nr-test.techservices.illinois.edu"
 export BHR_TOKEN=
+```
+
+## Updating Library Versions
+
+```shell
+make clean
+make requirements-test.txt
 ```
 
 ## VCR.py is used for testing http requests 
