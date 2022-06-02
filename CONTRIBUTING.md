@@ -27,7 +27,7 @@ source venv/bin/activate
 > You may need to `pip install wheel` then re-run
 > `pip install -r requirements-test.txt` to clear a `bdist_wheel` error message.
 
-For integration  testing, set BRH environment variables as used by `bhr-client`.
+For integration testing, set BRH environment variables as used by `bhr-client`.
 
 ```shell
 export BHR_HOST="https://nr-test.techservices.illinois.edu"
