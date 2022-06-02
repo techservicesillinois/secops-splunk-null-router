@@ -37,8 +37,7 @@ export BHR_TOKEN=
 ## Updating Library Versions
 
 ```shell
-make clean
-make requirements-test.txt
+$ make force-clean requirements-test.txt
 ```
 
 ## VCR.py is used for testing http requests 
