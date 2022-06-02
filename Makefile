@@ -39,11 +39,14 @@ venv: ssh/id_rsa
 	python -m venv venv
 	$(VENV_PYTHON) -m pip install -r requirements-test.txt
 
+requirements-test.txt: export SOAR_CONNECTOR_FORK=git+ssh://git@github.com/edthedev/pytest-splunk-soar-connectors.git@d05e170c5c3f7592d33110e148f4ccbaa6425eeb
 requirements-test.txt: requirements-test.in
 	rm -rf $(VENV_REQS)
 	python -m venv $(VENV_REQS)
 	$(VENV_REQS)/bin/python -m pip install -r $^
 	$(VENV_REQS)/bin/python -m pip freeze -qqq > $@
+	#REMOVE once pytest-splunk-soar-connectors is on pypi
+	sed -i "s;^pytest-splunk-soar-connectors==.*;$(SOAR_CONNECTOR_FORK);" $@
 
 test: venv
 	$(VENV_PYTHON) -m pytest
