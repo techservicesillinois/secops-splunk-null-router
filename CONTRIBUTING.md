@@ -13,10 +13,10 @@ pyenv install 3.9.0
 pyenv local 3.9.0
 ```
 
-You can verify the above with `pyenv local`:
+You can verify the above with `python --version`:
 ```
-$ pyenv local
-3.9.0 (set by /home/delaport/src/secops-splunk-null-router/.python-version)
+$ python --version
+Python 3.9.0
 ```
 
 ```shell
