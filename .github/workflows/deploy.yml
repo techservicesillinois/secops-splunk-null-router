@@ -8,19 +8,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.9
     - name: Test
       run: |
+        mkdir -p 700 $HOME/.ssh
+        echo "$DEPLOY_KEY" > $HOME/.ssh/id_rsa
+        chmod 400 $HOME/.ssh/id_rsa
         make test
       env:
-        PYTEST_TEMP_RO_DEPLOY_KEY: ${{ secrets.PYTEST_TEMP_RO_DEPLOY_KEY }}
+        # TODO: Remove deploy key after issue #3 is resolved
+        DEPLOY_KEY: ${{ secrets.PYTEST_TEMP_RO_DEPLOY_KEY }}
     - name: Build Package
       run: |
         make build
     - name: Post to Splunk SOAR API
       run: |
+        python -m pip install requests
         make deploy
       env:
         SOAR_TOKEN: ${{ secrets.CICD_GITHUB_AUTOMATION }}
         SOAR_URL: ${{ secrets.SOAR_URL }}
-      
-        

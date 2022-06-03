@@ -27,15 +27,7 @@ version: .tag
 deploy: soar_null_router.tgz
 	python deploy.py
 
-ssh: 
-	mkdir -m 700 $@
-
-ssh/id_rsa: ssh
-	echo "$$PYTEST_TEMP_RO_DEPLOY_KEY" > $@
-	chmod 400 $@
-
-venv: export GIT_SSH_COMMAND=/usr/bin/ssh -i $(PWD)/ssh/id_rsa
-venv: ssh/id_rsa
+venv:
 	python -m venv venv
 	$(VENV_PYTHON) -m pip install -r requirements-test.txt
 
@@ -52,11 +44,10 @@ test: venv
 	$(VENV_PYTHON) -m pytest
 	
 clean:
-	rm -rf venv ssh $(VENV_REQS)
+	rm -rf venv $(VENV_REQS)
 	rm -f soar_null_router.tgz .tag
 	-find src -type d -name __pycache__ -exec rm -fr "{}" \;
 	git checkout -- $(TAG_FILES)
 
 force-clean: clean
 	rm -f requirements-test.txt
-	
