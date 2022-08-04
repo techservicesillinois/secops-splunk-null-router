@@ -2,17 +2,13 @@ import json
 
 import pytest
 
-from unittest.mock import patch, Mock
-
 from phsoar_null_router.soar_null_router_connector import (
     Soar_Null_RouterConnector
 )
 from bhr_client.rest import Client as BHRClient
 
 
-@patch("phsoar_null_router.soar_null_router_connector.login_from_env")
-def test_connectivity(mock, connector: Soar_Null_RouterConnector):
-    mock.return_value = Mock(spec=BHRClient)
+def test_connectivity_vcr(cassette, connector: Soar_Null_RouterConnector):
     in_json = {
         "appid": "fceeaac1-8f96-46d6-9c3b-896e363eb004",
         "identifier": "test_connectivity",
@@ -25,25 +21,18 @@ def test_connectivity(mock, connector: Soar_Null_RouterConnector):
 
     # Assertion
     assert action_result[0]["message"] == "Active connection"
-    mock.return_value.query.assert_called_once()
 
 
-@pytest.mark.parametrize("cidr,source,why,duration", [
-    ('151.45.29.79/32', 'TEST', "Malicious IP!", '100'),
-    ('151.45.29.20/32', '', "Malicious IP!", ''),
-])
-@patch("phsoar_null_router.soar_null_router_connector.login_from_env")
-def test_block(mock, connector: Soar_Null_RouterConnector, cidr, source,
-               why, duration):
-    mock.return_value = Mock(spec=BHRClient)
+def test_block_vcr(cassette, connector: Soar_Null_RouterConnector):
+    cidr = '151.45.29.79/32'
     in_json = {
         "appid": "fceeaac1-8f96-46d6-9c3b-896e363eb004",
         "identifier": "block",
         "parameters": [{
             "cidr": cidr,
-            "source": source if source else 'SOAR',
-            "why": why,
-            "duration": duration if duration else '300',
+            "source": 'TEST',
+            "why": "Malicious IP!",
+            "duration": '100',
         }]
     }
 
@@ -54,6 +43,3 @@ def test_block(mock, connector: Soar_Null_RouterConnector, cidr, source,
 
     # Assertion
     assert action_result[0]["message"] == f"Blocked {cidr}"
-
-    parameters = in_json['parameters'][0]
-    mock.return_value.block.assert_called_once_with(**parameters)

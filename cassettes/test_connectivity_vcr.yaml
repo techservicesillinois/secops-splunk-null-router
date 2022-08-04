@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer FAKE_TOKEN
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://nr-test.techservices.illinois.edu/bhr/api/query/127.0.0.1/32
+  response:
+    body:
+      string: '[{"who":"SOAR-test","url":"https://nr-test.techservices.illinois.edu/bhr/api/blocks/15576320/","cidr":"127.0.0.1/32","source":"testSource","why":"testWhy","added":"2022-05-09T11:57:30.852181-05:00","unblock_at":"2022-05-09T11:58:20.552603-05:00","skip_whitelist":false,"set_blocked":"https://nr-test.techservices.illinois.edu/bhr/api/blocks/15576320/set_blocked/"}]'
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '365'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 09 Aug 2022 20:49:08 GMT
+      Keep-Alive:
+      - timeout=5, max=100
+      Server:
+      - Apache/2.4.34 (Red Hat) OpenSSL/1.0.2k-fips mod_wsgi/4.6.8 Python/3.8
+      Vary:
+      - Accept
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,25 +1,36 @@
+import json
 import os
 import sys
 import logging
-
-# Add root directory to path
-sys.path.insert(0, os.getcwd()) 
-
 import pytest
+import vcr
+
+from phsoar_null_router.soar_null_router_connector import (
+    Soar_Null_RouterConnector)
+
 # Load pytest-splunk-soar-connectors plugin
 pytest_plugins = ("splunk-soar-connectors")
 
-# Replace this with the import for your connector
-from phsoar_null_router.soar_null_router_connector import Soar_Null_RouterConnector
 
-#TODO Mock environment variables BHR_HOST and BHR_TOKEN
 @pytest.fixture(scope='function')
-def connector():
+def connector(monkeypatch):
+    monkeypatch.setenv('BHR_HOST', 'https://nr-test.techservices.illinois.edu')
+    monkeypatch.setenv('BHR_TOKEN', 'FAKE_TOKEN')
+
     conn = Soar_Null_RouterConnector()
-
-    # Define the asset configuration to be used 
-    # conn.config = {
-    # }
-
     conn.logger.setLevel(logging.INFO)
     return conn
+
+
+@pytest.fixture
+def cassette(request) -> vcr.cassette.Cassette:
+    my_vcr = vcr.VCR(
+        cassette_library_dir='cassettes',
+        record_mode='none',
+        filter_headers=[('Authorization', 'Bearer FAKE_TOKEN')]
+    )
+
+    with my_vcr.use_cassette(f'{request.function.__name__}.yaml') as tape:
+        yield tape
+        assert tape.all_played
+        assert tape.play_count == 1
