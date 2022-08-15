@@ -6,7 +6,8 @@ import pytest
 import vcr
 
 from phsoar_null_router.soar_null_router_connector import (
-    Soar_Null_RouterConnector)
+    Soar_Null_RouterConnector
+)
 
 # Load pytest-splunk-soar-connectors plugin
 pytest_plugins = ("splunk-soar-connectors")
