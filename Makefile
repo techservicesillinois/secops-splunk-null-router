@@ -1,6 +1,9 @@
-.PHONY: all build clean
+.PHONY: all build clean lint static
 SRCS_DIR:=src/phsoar_null_router
-SRCS:=$(shell find $(SRCS_DIR) -type f)
+TSCS_DIR:=tests
+SOAR_SRCS:=$(shell find $(SRCS_DIR) -type f)
+SRCS:=$(shell find $(SRCS_DIR) -name '*.py')
+TSCS:=$(shell find $(TSCS_DIR) -name '*.py')
 TAG_FILES:=$(addprefix $(SRCS_DIR)/, soar_null_router.json __init__.py)
 VENV_PYTHON:=venv/bin/python
 VENV_REQS:=.requirements.venv
@@ -15,7 +18,7 @@ all: build
 
 build: soar_null_router.tgz
 
-soar_null_router.tgz: .tag $(SRCS)
+soar_null_router.tgz: .tag $(SOAR_SRCS)
 	tar zcvf $@ -C src .
 
 version: .tag
@@ -40,11 +43,22 @@ requirements-test.txt: requirements-test.in
 	#REMOVE once pytest-splunk-soar-connectors is on pypi
 	sed -i "s;^pytest-splunk-soar-connectors==.*;$(PYTEST_SOAR_REPO);" $@
 
-test: venv
+lint: .lint
+.lint: $(SRCS) $(TSCS)
+	$(VENV_PYTHON) -m flake8 $?
+	touch $@
+
+static: .static
+.static: $(SRCS) $(TSCS)
+	$(VENV_PYTHON) -m mypy $?
+	touch $@
+
+test: venv lint static
 	$(VENV_PYTHON) -m pytest
 	
 clean:
 	rm -rf venv $(VENV_REQS)
+	rm -rf .lint .static
 	rm -f soar_null_router.tgz .tag
 	-find src -type d -name __pycache__ -exec rm -fr "{}" \;
 	git checkout -- $(TAG_FILES)

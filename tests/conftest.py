@@ -1,6 +1,3 @@
-import json
-import os
-import sys
 import logging
 import pytest
 import vcr
