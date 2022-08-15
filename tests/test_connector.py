@@ -1,5 +1,4 @@
 import json
-from re import T
 
 import pytest
 
