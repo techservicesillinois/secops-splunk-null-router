@@ -8,7 +8,7 @@ VENV_REQS:=.requirements.venv
 ifeq (tag, $(GITHUB_REF_TYPE))
 	TAG?=$(GITHUB_REF_NAME)
 else
-	TAG?=4.0.1
+	TAG?=0.0.0
 endif
 
 all: build
