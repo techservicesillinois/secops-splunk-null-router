@@ -24,17 +24,20 @@ def _test_connectivity(connector: Soar_Null_RouterConnector):
     # Assertion
     assert action_result[0]["message"] == "Active connection"
 
+
 @patch("phsoar_null_router.soar_null_router_connector.login_from_env")
 def test_connectivity(mock, connector: Soar_Null_RouterConnector):
     mock.return_value = Mock(spec=BHRClient)
     _test_connectivity(connector)
     mock.return_value.query.assert_called_once()
 
+
 def test_connectivity_vcr(cassette, connector: Soar_Null_RouterConnector):
     _test_connectivity(connector)
 
-def _test_block(connector: Soar_Null_RouterConnector, 
-    cidr, source, why, duration):
+
+def _test_block(connector: Soar_Null_RouterConnector,
+                cidr, source, why, duration):
     in_json = {
         "appid": "fceeaac1-8f96-46d6-9c3b-896e363eb004",
         "identifier": "block",
@@ -56,6 +59,7 @@ def _test_block(connector: Soar_Null_RouterConnector,
 
     return in_json
 
+
 @pytest.mark.parametrize("cidr,source,why,duration", [
     ('151.45.29.79/32', 'TEST', "Malicious IP!", '100'),
     ('151.45.29.20/32', '', "Malicious IP!", ''),
@@ -65,7 +69,7 @@ def test_block(mock, connector: Soar_Null_RouterConnector, cidr, source,
                why, duration):
     mock.return_value = Mock(spec=BHRClient)
     in_json = _test_block(
-        connector, 
+        connector,
         cidr,
         source,
         why,
@@ -75,9 +79,10 @@ def test_block(mock, connector: Soar_Null_RouterConnector, cidr, source,
     parameters = in_json['parameters'][0]
     mock.return_value.block.assert_called_once_with(**parameters)
 
+
 def test_block_vcr(cassette, connector: Soar_Null_RouterConnector):
     _test_block(
-        connector, 
+        connector,
         '151.45.29.79/32',
         'TEST',
         'Malicious IP!',

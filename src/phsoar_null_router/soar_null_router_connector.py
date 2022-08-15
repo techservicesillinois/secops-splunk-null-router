@@ -48,7 +48,8 @@ class Soar_Null_RouterConnector(BaseConnector):
 
         return RetVal(
             action_result.set_status(
-                phantom.APP_ERROR, "Empty response and no information in the header"
+                phantom.APP_ERROR,
+                "Empty response and no information in the header"
             ), None
         )
 
@@ -62,13 +63,15 @@ class Soar_Null_RouterConnector(BaseConnector):
             split_lines = error_text.split('\n')
             split_lines = [x.strip() for x in split_lines if x.strip()]
             error_text = '\n'.join(split_lines)
-        except:
+        except Exception:
             error_text = "Cannot parse error details"
 
-        message = "Status Code: {0}. Data from server:\n{1}\n".format(status_code, error_text)
+        message = "Status Code: {0}. Data from server:\n{1}\n".format(
+            status_code, error_text)
 
         message = message.replace(u'{', '{{').replace(u'}', '}}')
-        return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
+        return RetVal(action_result.set_status(phantom.APP_ERROR, message),
+                      None)
 
     def _process_json_response(self, r, action_result):
         # Try a json parse
@@ -77,7 +80,8 @@ class Soar_Null_RouterConnector(BaseConnector):
         except Exception as e:
             return RetVal(
                 action_result.set_status(
-                    phantom.APP_ERROR, "Unable to parse JSON response. Error: {0}".format(str(e))
+                    phantom.APP_ERROR,
+                    f"Unable to parse JSON response. Error: {str(e)}"
                 ), None
             )
 
@@ -86,15 +90,16 @@ class Soar_Null_RouterConnector(BaseConnector):
             return RetVal(phantom.APP_SUCCESS, resp_json)
 
         # You should process the error returned in the json
-        message = "Error from server. Status Code: {0} Data from server: {1}".format(
-            r.status_code,
-            r.text.replace(u'{', '{{').replace(u'}', '}}')
-        )
+        message = f"Error from server. Status Code: {r.status_code}" \
+                  "Data from server: " \
+                  f"{r.text.replace(u'{', '{{').replace(u'}', '}}')}"
 
-        return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
+        return RetVal(action_result.set_status(phantom.APP_ERROR, message),
+                      None)
 
     def _process_response(self, r, action_result):
-        # store the r_text in debug data, it will get dumped in the logs if the action fails
+        # store the r_text in debug data, it will get dumped in the logs
+        # if the action fails
         if hasattr(action_result, 'add_debug_data'):
             action_result.add_debug_data({'r_status_code': r.status_code})
             action_result.add_debug_data({'r_text': r.text})
@@ -118,15 +123,16 @@ class Soar_Null_RouterConnector(BaseConnector):
             return self._process_empty_response(r, action_result)
 
         # everything else is actually an error at this point
-        message = "Can't process response from server. Status Code: {0} Data from server: {1}".format(
-            r.status_code,
-            r.text.replace('{', '{{').replace('}', '}}')
-        )
+        message = f"Can't process response from server. " \
+                  f"Status Code: {r.status_code} Data from server: " \
+                  f"{r.text.replace('{', '{{').replace('}', '}}')}"
 
-        return RetVal(action_result.set_status(phantom.APP_ERROR, message), None)
+        return RetVal(action_result.set_status(phantom.APP_ERROR, message),
+                      None)
 
     def _make_rest_call(self, endpoint, action_result, method="get", **kwargs):
-        # **kwargs can be any additional parameters that requests.request accepts
+        # **kwargs can be any additional parameters that
+        # requests.request accepts
 
         config = self.get_config()
 
@@ -136,7 +142,8 @@ class Soar_Null_RouterConnector(BaseConnector):
             request_func = getattr(requests, method)
         except AttributeError:
             return RetVal(
-                action_result.set_status(phantom.APP_ERROR, "Invalid method: {0}".format(method)),
+                action_result.set_status(
+                    phantom.APP_ERROR, "Invalid method: {0}".format(method)),
                 resp_json
             )
 
@@ -153,14 +160,16 @@ class Soar_Null_RouterConnector(BaseConnector):
         except Exception as e:
             return RetVal(
                 action_result.set_status(
-                    phantom.APP_ERROR, "Error Connecting to server. Details: {0}".format(str(e))
+                    phantom.APP_ERROR, "Error Connecting to server. "
+                    f"Details: {str(e)}"
                 ), resp_json
             )
 
         return self._process_response(r, action_result)
 
     def _handle_test_connectivity(self, param):
-        # Add an action result object to self (BaseConnector) to represent the action for this param
+        # Add an action result object to self (BaseConnector)
+        # to represent the action for this param
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         # NOTE: test connectivity does _NOT_ take any parameters
@@ -174,33 +183,38 @@ class Soar_Null_RouterConnector(BaseConnector):
         self._bhr.query('127.0.0.1/32')
 
         # if phantom.is_fail(ret_val):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
-            # for now the return is commented out, but after implementation, return from here
-            # self.save_progress("Test Connectivity Failed.")
-            # return action_result.get_status()
+        #    # the call to the 3rd party device or service failed,
+        #    # action result should contain all the error details
+        #    # for now the return is commented out, but after implementation,
+        #    # return from here
+        #    self.save_progress("Test Connectivity Failed.")
+        #    return action_result.get_status()
 
         # Return success
         self.save_progress("Test Connectivity Passed")
-        return action_result.set_status(phantom.APP_SUCCESS, "Active connection")
+        return action_result.set_status(phantom.APP_SUCCESS,
+                                        "Active connection")
 
-        # For now return Error with a message, in case of success we don't set the message, but use the summary
-        # return action_result.set_status(phantom.APP_ERROR, "Action not yet implemented")
-    
+        # For now return Error with a message,
+        # in case of success we don't set the message, but use the summary
+        # return action_result.set_status(phantom.APP_ERROR,
+        #                                 "Action not yet implemented")
+
     def _handle_block(self, param):
         action_result = self.add_action_result(ActionResult(param))
 
         args = {}
         for key in ["cidr", "source", "why", "duration"]:
             args[key] = phantom.get_req_value(param, key)
-        
-        result = self._bhr.block(**args)
+
+        self._bhr.block(**args)
 
         return action_result.set_status(
             phantom.APP_SUCCESS, f"Blocked {args['cidr']}")
 
     def handle_action(self, param):
         ret_val = phantom.APP_SUCCESS
-        
+
         # Get the action that we are supposed to execute for this App Run
         action_id = self.get_action_identifier()
 
@@ -264,7 +278,8 @@ def main():
 
     if username and password:
         try:
-            login_url = Soar_Null_RouterConnector._get_phantom_base_url() + '/login'
+            login_url = Soar_Null_RouterConnector._get_phantom_base_url() \
+                        + '/login'
 
             print("Accessing the Login page")
             r = requests.get(login_url, verify=False)
@@ -280,10 +295,12 @@ def main():
             headers['Referer'] = login_url
 
             print("Logging into Platform to get the session id")
-            r2 = requests.post(login_url, verify=False, data=data, headers=headers)
+            r2 = requests.post(login_url, verify=False,
+                               data=data, headers=headers)
             session_id = r2.cookies['sessionid']
         except Exception as e:
-            print("Unable to get session id from the platform. Error: " + str(e))
+            print("Unable to get session id from the platform."
+                  f"Error: {str(e)}")
             exit(1)
 
     with open(args.input_test_json) as f:
