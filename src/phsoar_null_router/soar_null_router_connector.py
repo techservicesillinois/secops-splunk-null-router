@@ -187,11 +187,16 @@ class Soar_Null_RouterConnector(BaseConnector):
         # return action_result.set_status(phantom.APP_ERROR, "Action not yet implemented")
     
     def _handle_block(self, param):
-        action_result = self.add_action_result(ActionResult(dict(param)))
-        cidr = phantom.get_req_value(param, "cidr")
-        result = self._bhr.block(cidr=cidr, source='SOAR', why='Appears in our suspicious event list.')
+        action_result = self.add_action_result(ActionResult(param))
 
-        return action_result.set_status(phantom.APP_SUCCESS, f"Blocked {cidr}")
+        args = {}
+        for key in ["cidr", "source", "why", "duration"]:
+            args[key] = phantom.get_req_value(param, key)
+        
+        result = self._bhr.block(**args)
+
+        return action_result.set_status(
+            phantom.APP_SUCCESS, f"Blocked {args['cidr']}")
 
     def handle_action(self, param):
         ret_val = phantom.APP_SUCCESS

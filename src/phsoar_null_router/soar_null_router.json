@@ -1,5 +1,5 @@
 {
-  "appid": "fceeaac1-8f96-46d6-9c3b-896e363eb004",
+  "appid": "949dc1bb-0ca3-404c-b698-d7d21d94eb94",
   "name": "NCSA BHR",
   "description": "Block a CIDR with NCSA BHR",
   "type": "network security",
@@ -50,6 +50,45 @@
           "name": "cidr",
           "id": 1,
           "param_name": "cidr"
+        },
+        "source": {
+          "description": "Source of the block",
+          "data_type": "string",
+          "required": false,
+          "primary": true,
+          "contains": [],
+          "value_list": [],
+          "default": "SOAR",
+          "order": 1,
+          "name": "source",
+          "id": 2,
+          "param_name": "source"
+        },
+        "why": {
+          "description": "Reason for the block",
+          "data_type": "string",
+          "required": true,
+          "primary": true,
+          "contains": [],
+          "value_list": [],
+          "default": "",
+          "order": 2,
+          "name": "why",
+          "id": 3,
+          "param_name": "why"
+        },
+        "duration": {
+          "description": "Time to block in seconds or formatted time string",
+          "data_type": "string",
+          "required": false,
+          "primary": true,
+          "contains": [],
+          "value_list": [],
+          "default": "300",
+          "order": 3,
+          "name": "duration",
+          "id": 4,
+          "param_name": "duration"
         }
       },
       "output": [
