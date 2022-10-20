@@ -47,3 +47,12 @@ For integration testing, set BRH environment variables as used by `bhr-client`.
 [VCR.py][48] is used for testing http requests.
 
 [48]: https://vcrpy.readthedocs.io/en/latest/
+
+> WARNING: The Null Router API can return a `500` error when sent a CIDR that it cannot block (i.e. a campus internal IP).
+
+You can also test using version 0.0.0 in the Splunk web interface.
+
+> WARNING: When running a test from the `Actions` web panel while viewing
+> a Splunk SOAR app, the test will not run on the `automation broker` -
+> even if the selected `asset` is set to use the automation broker.
+> To test using the automation broker through the SOAR site, select an event and launch the action from it.
