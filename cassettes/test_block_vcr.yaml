@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: cidr=151.45.29.79%2F32&source=TEST&why=Malicious+IP%21&duration=100&autoscale=False&skip_whitelist=False&extend=False
+    body: cidr=151.45.29.90%2F32&source=TEST&why=Malicious+IP%21&duration=100&autoscale=True&skip_whitelist=False&extend=False
     headers:
       Accept:
       - '*/*'
@@ -11,7 +11,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '117'
+      - '116'
       Content-Type:
       - application/x-www-form-urlencoded
       User-Agent:
@@ -20,8 +20,8 @@ interactions:
     uri: https://nr-test.techservices.illinois.edu/bhr/api/block
   response:
     body:
-      string: '{"who":"SOAR-test","url":"https://nr-test.techservices.illinois.edu/bhr/api/blocks/16231388/","cidr":"151.45.29.79/32","source":"TEST","why":"Malicious
-        IP!","added":"2022-10-20T14:49:19.311432-05:00","unblock_at":"2022-10-20T14:50:59.299800-05:00","skip_whitelist":false,"set_blocked":"https://nr-test.techservices.illinois.edu/bhr/api/blocks/16231388/set_blocked/"}'
+      string: '{"who":"SOAR-test","url":"https://nr-test.techservices.illinois.edu/bhr/api/blocks/16231390/","cidr":"151.45.29.90/32","source":"TEST","why":"Malicious
+        IP!","added":"2022-10-20T14:56:57.414618-05:00","unblock_at":"2022-10-20T14:58:37.405073-05:00","skip_whitelist":false,"set_blocked":"https://nr-test.techservices.illinois.edu/bhr/api/blocks/16231390/set_blocked/"}'
     headers:
       Allow:
       - POST, OPTIONS
@@ -32,7 +32,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 20 Oct 2022 19:49:19 GMT
+      - Thu, 20 Oct 2022 19:56:57 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
