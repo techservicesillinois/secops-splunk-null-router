@@ -9,6 +9,7 @@ from phsoar_null_router.soar_null_router_connector import (
 # Load pytest-splunk-soar-connectors plugin
 pytest_plugins = ("splunk-soar-connectors")
 
+
 def _connector():
     conn = Soar_Null_RouterConnector()
     conn.logger.setLevel(logging.INFO)

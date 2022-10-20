@@ -8,7 +8,6 @@
 
 # Python 3 Compatibility imports
 from __future__ import print_function, unicode_literals
-from enum import auto
 
 # Phantom App imports
 import phantom.app as phantom
@@ -207,7 +206,7 @@ class Soar_Null_RouterConnector(BaseConnector):
         args = {}
         for key in ["cidr", "source", "why", "duration", "autoscale"]:
             args[key] = phantom.get_req_value(param, key)
-        
+
         if "autoscale" in args:
             args["autoscale"] = True if args["autoscale"] == "true" else False
 
@@ -283,7 +282,7 @@ def main():
     if username and password:
         try:
             login_url = Soar_Null_RouterConnector._get_phantom_base_url() \
-                        + '/login'
+                + '/login'
 
             print("Accessing the Login page")
             r = requests.get(login_url, verify=False)

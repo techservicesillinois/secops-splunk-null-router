@@ -18,7 +18,8 @@ def _test_connectivity(fake_connector: Soar_Null_RouterConnector):
     }
 
     # Execute Action
-    action_result_str = fake_connector._handle_action(json.dumps(in_json), None)
+    action_result_str = fake_connector._handle_action(
+        json.dumps(in_json), None)
     action_result = json.loads(action_result_str)
 
     # Assertion
@@ -60,6 +61,7 @@ def _test_block(fake_connector: Soar_Null_RouterConnector,
 
     return in_json
 
+
 @pytest.mark.parametrize("cidr,source,why,duration,autoscale", [
     ('151.45.29.79/32', 'TEST', "Malicious IP!", '100', "false"),
     ('151.45.29.20/32', '', "Malicious IP!", '', "true"),
@@ -79,8 +81,8 @@ def test_block(mock, fake_connector: Soar_Null_RouterConnector, cidr, source,
 
     parameters = in_json['parameters'][0]
     if parameters["autoscale"] == "true":
-        parameters["autoscale"] = True 
-    else: 
+        parameters["autoscale"] = True
+    else:
         parameters["autoscale"] = False
     mock.return_value.block.assert_called_once_with(**parameters)
 
