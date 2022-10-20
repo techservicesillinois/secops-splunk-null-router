@@ -8,6 +8,7 @@
 
 # Python 3 Compatibility imports
 from __future__ import print_function, unicode_literals
+from enum import auto
 
 # Phantom App imports
 import phantom.app as phantom
@@ -204,8 +205,11 @@ class Soar_Null_RouterConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(param))
 
         args = {}
-        for key in ["cidr", "source", "why", "duration"]:
+        for key in ["cidr", "source", "why", "duration", "autoscale"]:
             args[key] = phantom.get_req_value(param, key)
+        
+        if "autoscale" in args:
+            args["autoscale"] = True if args["autoscale"] == "true" else False
 
         self._bhr.block(**args)
 

@@ -89,6 +89,17 @@
           "name": "duration",
           "id": 4,
           "param_name": "duration"
+        },
+        "autoscale": {
+          "description": "Whether or not to auto scale the duration based on server side block history",
+          "data_type": "boolean",
+          "required": false,
+          "primary": true,
+          "default": false,
+          "order": 4,
+          "name": "autoscale",
+          "id": 5,
+          "param_name": "autoscale"
         }
       },
       "output": [

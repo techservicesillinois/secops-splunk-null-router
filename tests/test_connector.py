@@ -61,8 +61,8 @@ def _test_block(fake_connector: Soar_Null_RouterConnector,
     return in_json
 
 @pytest.mark.parametrize("cidr,source,why,duration,autoscale", [
-    ('151.45.29.79/32', 'TEST', "Malicious IP!", '100', False),
-    ('151.45.29.20/32', '', "Malicious IP!", '', True),
+    ('151.45.29.79/32', 'TEST', "Malicious IP!", '100', "false"),
+    ('151.45.29.20/32', '', "Malicious IP!", '', "true"),
 ])
 @patch("phsoar_null_router.soar_null_router_connector.login_from_env")
 def test_block(mock, fake_connector: Soar_Null_RouterConnector, cidr, source,
@@ -78,6 +78,10 @@ def test_block(mock, fake_connector: Soar_Null_RouterConnector, cidr, source,
     )
 
     parameters = in_json['parameters'][0]
+    if parameters["autoscale"] == "true":
+        parameters["autoscale"] = True 
+    else: 
+        parameters["autoscale"] = False
     mock.return_value.block.assert_called_once_with(**parameters)
 
 
@@ -88,5 +92,5 @@ def test_block_vcr(cassette, fake_connector: Soar_Null_RouterConnector):
         'TEST',
         'Malicious IP!',
         '100',
-        False
+        "false"
     )
