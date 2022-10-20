@@ -204,8 +204,11 @@ class Soar_Null_RouterConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(param))
 
         args = {}
-        for key in ["cidr", "source", "why", "duration"]:
+        for key in ["cidr", "source", "why", "duration", "autoscale"]:
             args[key] = phantom.get_req_value(param, key)
+
+        if "autoscale" in args:
+            args["autoscale"] = True if args["autoscale"] == "true" else False
 
         self._bhr.block(**args)
 
@@ -279,7 +282,7 @@ def main():
     if username and password:
         try:
             login_url = Soar_Null_RouterConnector._get_phantom_base_url() \
-                        + '/login'
+                + '/login'
 
             print("Accessing the Login page")
             r = requests.get(login_url, verify=False)

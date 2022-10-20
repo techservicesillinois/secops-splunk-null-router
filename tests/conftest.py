@@ -10,14 +10,23 @@ from phsoar_null_router.soar_null_router_connector import (
 pytest_plugins = ("splunk-soar-connectors")
 
 
-@pytest.fixture(scope='function')
-def connector(monkeypatch):
-    monkeypatch.setenv('BHR_HOST', 'https://nr-test.techservices.illinois.edu')
-    monkeypatch.setenv('BHR_TOKEN', 'FAKE_TOKEN')
-
+def _connector():
     conn = Soar_Null_RouterConnector()
     conn.logger.setLevel(logging.INFO)
     return conn
+
+
+@pytest.fixture(scope='function')
+def connector():
+    return _connector()
+
+
+@pytest.fixture(scope='function')
+def fake_connector(monkeypatch):
+    monkeypatch.setenv('BHR_HOST', 'https://nr-test.techservices.illinois.edu')
+    monkeypatch.setenv('BHR_TOKEN', 'FAKE_TOKEN')
+
+    return _connector()
 
 
 @pytest.fixture
