@@ -7,6 +7,12 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.1] - 2022-12-14
+
+### Updated
+
+- Update dependencies to address [Certifi removing TrustCor root certificate ](https://github.com/techservicesillinois/secops-splunk-null-router/security/dependabot/2)
+
 ## [1.0.0] - 2022-05-17
 
 ### Added
