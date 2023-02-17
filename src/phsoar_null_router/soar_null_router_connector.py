@@ -26,7 +26,6 @@ __git_hash__ = 'GITHUB_SHA'
 __deployed__ = 'GITHUB_DEPLOYED'
 
 
-
 class RetVal(tuple):
 
     def __new__(cls, val1, val2=None):
