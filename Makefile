@@ -4,7 +4,8 @@ TSCS_DIR:=tests
 SOAR_SRCS:=$(shell find $(SRCS_DIR) -type f)
 SRCS:=$(shell find $(SRCS_DIR) -name '*.py')
 TSCS:=$(shell find $(TSCS_DIR) -name '*.py')
-TAG_FILES:=$(addprefix $(SRCS_DIR)/, soar_null_router.json __init__.py)
+VERSION_FILES:=$(addprefix $(SRCS_DIR)/, soar_null_router.json soar_null_router_connector.py)
+GITHUB_DEPLOYED:=$(shell date -u +%FT%X.%6NZ)
 VENV_PYTHON:=venv/bin/python
 VENV_REQS:=.requirements.venv
 
@@ -18,13 +19,21 @@ all: build
 
 build: soar_null_router.tgz
 
-soar_null_router.tgz: .tag $(SOAR_SRCS)
+soar_null_router.tgz: .tag .commit .deployed $(SOAR_SRCS)
 	tar zcvf $@ -C src .
 
-version: .tag
-.tag: $(TAG_FILES)
+version: .tag .commit .deployed
+.tag: $(VERSION_FILES)
 	echo version $(TAG)
 	sed -i s/GITHUB_TAG/$(TAG)/ $^
+	touch $@
+.commit: $(VERSION_FILES)
+	echo commit $(GITHUB_SHA)
+	sed -i s/GITHUB_SHA/$(GITHUB_SHA)/ $^
+	touch $@
+.deployed: $(VERSION_FILES)
+	echo deployed $(GITHUB_DEPLOYED)
+	sed -i s/GITHUB_DEPLOYED/$(GITHUB_DEPLOYED)/ $^
 	touch $@
 
 deploy: soar_null_router.tgz

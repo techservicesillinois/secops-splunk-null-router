@@ -21,6 +21,10 @@ import requests
 import json
 from bs4 import BeautifulSoup
 
+__version__ = 'GITHUB_TAG'
+__git_hash__ = 'GITHUB_SHA'
+__deployed__ = 'GITHUB_DEPLOYED'
+
 
 class RetVal(tuple):
 
