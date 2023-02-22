@@ -43,7 +43,7 @@ venv: requirements-test.txt
 	python -m venv venv
 	$(VENV_PYTHON) -m pip install -r $^
 
-requirements-test.txt: export PYTEST_SOAR_REPO=git+ssh://git@github.com/edthedev/pytest-splunk-soar-connectors.git
+requirements-test.txt: export PYTEST_SOAR_REPO=git+ssh://git@github.com/splunk/pytest-splunk-soar-connectors.git
 requirements-test.txt: requirements-test.in
 	rm -rf $(VENV_REQS)
 	python -m venv $(VENV_REQS)
@@ -52,14 +52,16 @@ requirements-test.txt: requirements-test.in
 	#REMOVE once pytest-splunk-soar-connectors is on pypi
 	sed -i "s;^pytest-splunk-soar-connectors==.*;$(PYTEST_SOAR_REPO);" $@
 
-lint: .lint
+lint: venv .lint
 .lint: $(SRCS) $(TSCS)
 	$(VENV_PYTHON) -m flake8 $?
 	touch $@
 
-static: .static
+static: venv .static
 .static: $(SRCS) $(TSCS)
-	$(VENV_PYTHON) -m mypy $?
+	echo "Code: $(SRCS)"
+	echo "Test: $(TSCS)"
+	$(VENV_PYTHON) -m mypy $^
 	touch $@
 
 test: venv lint static

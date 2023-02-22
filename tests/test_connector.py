@@ -10,7 +10,7 @@ from phsoar_null_router.soar_null_router_connector import (
 from bhr_client.rest import Client as BHRClient
 
 
-def _test_connectivity(fake_connector: Soar_Null_RouterConnector):
+def _test_connectivity(connector: Soar_Null_RouterConnector):
     in_json = {
         "appid": "fceeaac1-8f96-46d6-9c3b-896e363eb004",
         "identifier": "test_connectivity",
@@ -18,7 +18,7 @@ def _test_connectivity(fake_connector: Soar_Null_RouterConnector):
     }
 
     # Execute Action
-    action_result_str = fake_connector._handle_action(
+    action_result_str = connector._handle_action(
         json.dumps(in_json), None)
     action_result = json.loads(action_result_str)
 
@@ -27,17 +27,17 @@ def _test_connectivity(fake_connector: Soar_Null_RouterConnector):
 
 
 @patch("phsoar_null_router.soar_null_router_connector.login_from_env")
-def test_connectivity(mock, fake_connector: Soar_Null_RouterConnector):
+def test_connectivity(mock, connector: Soar_Null_RouterConnector):
     mock.return_value = Mock(spec=BHRClient)
-    _test_connectivity(fake_connector)
+    _test_connectivity(connector)
     mock.return_value.query.assert_called_once()
 
 
-def test_connectivity_vcr(cassette, fake_connector: Soar_Null_RouterConnector):
-    _test_connectivity(fake_connector)
+def test_connectivity_vcr(cassette, connector: Soar_Null_RouterConnector):
+    _test_connectivity(connector)
 
 
-def _test_block(fake_connector: Soar_Null_RouterConnector,
+def _test_block(connector: Soar_Null_RouterConnector,
                 cidr, source, why, duration, autoscale):
     in_json = {
         "appid": "fceeaac1-8f96-46d6-9c3b-896e363eb004",
@@ -53,7 +53,7 @@ def _test_block(fake_connector: Soar_Null_RouterConnector,
 
     # Execute Action
     dump = json.dumps(in_json)
-    action_result_str = fake_connector._handle_action(dump, None)
+    action_result_str = connector._handle_action(dump, None)
     action_result = json.loads(action_result_str)
 
     # Assertion
@@ -67,11 +67,11 @@ def _test_block(fake_connector: Soar_Null_RouterConnector,
     ('151.45.29.20/32', '', "Malicious IP!", '', "true"),
 ])
 @patch("phsoar_null_router.soar_null_router_connector.login_from_env")
-def test_block(mock, fake_connector: Soar_Null_RouterConnector, cidr, source,
+def test_block(mock, connector: Soar_Null_RouterConnector, cidr, source,
                why, duration, autoscale):
     mock.return_value = Mock(spec=BHRClient)
     in_json = _test_block(
-        fake_connector,
+        connector,
         cidr,
         source,
         why,
@@ -87,9 +87,9 @@ def test_block(mock, fake_connector: Soar_Null_RouterConnector, cidr, source,
     mock.return_value.block.assert_called_once_with(**parameters)
 
 
-def test_block_vcr(cassette, fake_connector: Soar_Null_RouterConnector):
+def test_block_vcr(cassette, connector: Soar_Null_RouterConnector):
     _test_block(
-        fake_connector,
+        connector,
         '151.45.29.79/32',
         'TEST',
         'Malicious IP!',
