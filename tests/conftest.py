@@ -19,22 +19,10 @@ pytest_plugins = ("splunk-soar-connectors")
 
 
 @pytest.fixture
-def connector() -> Soar_Null_RouterConnector:
+def connector(monkeypatch) -> Soar_Null_RouterConnector:
     conn = Soar_Null_RouterConnector()
-    if not VCR_RECORD:  # Always use cassette values when using cassette
-        conn.config = {
-            'BHR_HOST': CASSETTE_HOST,
-            'BHR_TOKEN': CASSETTE_TOKEN,
-        }
-    else:  # User environment values
-        env_keys = ['host', 'token']
-
-        for key in env_keys:
-            env_key = f'BHR_{key.upper()}'
-            conn.config[key] = os.environ.get(env_key, None)
-            if not conn.config[key]:
-                raise ValueError(f'{env_key} unset or empty with record mode')
-
+    monkeypatch.setenv('BHR_HOST', 'https://nr-test.techservices.illinois.edu')
+    monkeypatch.setenv('BHR_TOKEN', 'FAKE_TOKEN')
     conn.logger.setLevel(logging.INFO)
     return conn
 

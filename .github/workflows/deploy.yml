@@ -21,14 +21,6 @@ jobs:
       env:
         # TODO: Remove deploy key after issue #3 is resolved
         DEPLOY_KEY: ${{ secrets.PYTEST_TEMP_RO_DEPLOY_KEY }}
-        # These ENV variables need to be here due to quirks with BHR. The
-        # login_from_env() function searches for these variables in the ENV
-        # when the BHR client is initialized.
-        BHR_HOST: "https://nr-test.techservices.illinois.edu"
-        BHR_TOKEN: "FAKE_TOKEN"
-        BHR_IDENT: "BAR"
-        BHR_USERNAME: "tstark"
-        BHR_PASSWORD: "thanosrules"
     - name: Build Package
       run: |
         make build
