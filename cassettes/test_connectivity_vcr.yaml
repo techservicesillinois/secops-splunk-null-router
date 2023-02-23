@@ -13,10 +13,10 @@ interactions:
       User-Agent:
       - python-requests/2.28.2
     method: GET
-    uri: https://nr-test.techservices.illinois.edu/bhr/api/query/127.0.0.1/32
+    uri: https://FOO/bhr/api/query/127.0.0.1/32
   response:
     body:
-      string: '[{"who":"SOAR-test","url":"https://nr-test.techservices.illinois.edu/bhr/api/blocks/15576320/","cidr":"127.0.0.1/32","source":"testSource","why":"testWhy","added":"2022-05-09T11:57:30.852181-05:00","unblock_at":"2022-05-09T11:58:20.552603-05:00","skip_whitelist":false,"set_blocked":"https://nr-test.techservices.illinois.edu/bhr/api/blocks/15576320/set_blocked/"}]'
+      string: '[{"who":"SOAR-test","url":"https://FOO/bhr/api/blocks/15576320/","cidr":"127.0.0.1/32","source":"testSource","why":"testWhy","added":"2022-05-09T11:57:30.852181-05:00","unblock_at":"2022-05-09T11:58:20.552603-05:00","skip_whitelist":false,"set_blocked":"https://FOO/bhr/api/blocks/15576320/set_blocked/"}]'
     headers:
       Allow:
       - GET, HEAD, OPTIONS
@@ -27,7 +27,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 22 Feb 2023 21:20:28 GMT
+      - Thu, 23 Feb 2023 17:46:16 GMT
       Keep-Alive:
       - timeout=5, max=100
       Server:
