@@ -24,10 +24,10 @@ jobs:
     - name: Build Package
       run: |
         make build
-    - name: Post to Splunk SOAR API
-      run: |
-        python -m pip install requests
-        make deploy
-      env:
-        SOAR_TOKEN: ${{ secrets.CICD_GITHUB_AUTOMATION }}
-        SOAR_URL: ${{ secrets.SOAR_URL }}
+#    - name: Post to Splunk SOAR API
+#      run: |
+#        python -m pip install requests
+#        make deploy
+#      env:
+#        SOAR_TOKEN: ${{ secrets.CICD_GITHUB_AUTOMATION }}
+#        SOAR_URL: ${{ secrets.SOAR_URL }}
