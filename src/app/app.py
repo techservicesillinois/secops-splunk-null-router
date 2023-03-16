@@ -18,7 +18,6 @@ from phantom.action_result import ActionResult
 # Usage of the consts file is recommended
 # from soar_null_router_consts import *
 import requests
-import json
 from bs4 import BeautifulSoup
 
 __version__ = 'GITHUB_TAG'
