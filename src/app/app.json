@@ -142,10 +142,5 @@
       }
     ]
   },
-  "custom_made": false,
-  "directory": "soar_null_router_fceeaac1-8f96-46d6-9c3b-896e363eb004",
-  "version": 1,
-  "appname": "-",
-  "executable": "spawn3",
   "disabled": false
 }
