@@ -23,7 +23,7 @@ def _test_connectivity(fake_connector: AppConnector):
     assert action_result[0]["message"] == "Active connection"
 
 
-@patch("phsoar_null_router.soar_null_router_connector.login_from_env")
+@patch("app.app.login_from_env")
 def test_connectivity(mock, fake_connector: AppConnector):
     mock.return_value = Mock(spec=BHRClient)
     _test_connectivity(fake_connector)
@@ -63,7 +63,7 @@ def _test_block(fake_connector: AppConnector,
     ('151.45.29.79/32', 'TEST', "Malicious IP!", '100', "false"),
     ('151.45.29.20/32', '', "Malicious IP!", '', "true"),
 ])
-@patch("phsoar_null_router.soar_null_router_connector.login_from_env")
+@patch("app.app.login_from_env")
 def test_block(mock, fake_connector: AppConnector, cidr, source,
                why, duration, autoscale):
     mock.return_value = Mock(spec=BHRClient)
