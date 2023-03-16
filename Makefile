@@ -1,11 +1,17 @@
+# DO NOT EDIT
+# All project-specific values belong in config.mk!
+
 .PHONY: all build clean lint static
-SRCS_DIR:=src/phsoar_null_router
+include config.mk
+
+PACKAGE:=app
+SRCS_DIR:=src/$(MODULE)
 TSCS_DIR:=tests
 SOAR_SRCS:=$(shell find $(SRCS_DIR) -type f)
 SRCS:=$(shell find $(SRCS_DIR) -name '*.py')
 TSCS:=$(shell find $(TSCS_DIR) -name '*.py')
-VERSION_FILES:=$(addprefix $(SRCS_DIR)/, soar_null_router.json soar_null_router_connector.py)
-GITHUB_DEPLOYED:=$(shell date -u +%FT%X.%6NZ)
+VERSIONED_FILES:=$(addprefix $(SRCS_DIR)/, $(PACKAGE).json app.py)
+BUILD_TIME:=$(shell date -u +%FT%X.%6NZ)
 VENV_PYTHON:=venv/bin/python
 VENV_REQS:=.requirements.venv
 
@@ -14,36 +20,52 @@ ifeq (tag, $(GITHUB_REF_TYPE))
 else
 	TAG?=0.0.0
 endif
+GITHUB_SHA?=$(shell git rev-parse HEAD)
 
 all: build
 
-build: soar_null_router.tgz
+build: export APP_ID=$(PROD_APP_ID)
+build: export APP_NAME=$(PROD_APP_NAME)
+build: .appjson $(PACKAGE).tar
 
-soar_null_router.tgz: .tag .commit .deployed $(SOAR_SRCS)
-	tar zcvf $@ -C src .
+build-test: export APP_ID=$(TEST_APP_ID)
+build-test: export APP_NAME=$(TEST_APP_NAME)
+build-test: .appjson $(PACKAGE).tar
+
+$(PACKAGE).tar: version $(SOAR_SRCS)
+	-find src -type d -name __pycache__ -exec rm -fr "{}" \;
+	tar cvf $@ -C src $(MODULE)
 
 version: .tag .commit .deployed
-.tag: $(VERSION_FILES)
+.tag: $(VERSIONED_FILES)
 	echo version $(TAG)
-	sed -i s/GITHUB_TAG/$(TAG)/ $^
+	sed -i "s/GITHUB_TAG/$(TAG)/" $^
 	touch $@
-.commit: $(VERSION_FILES)
+.commit: $(VERSIONED_FILES)
 	echo commit $(GITHUB_SHA)
-	sed -i s/GITHUB_SHA/$(GITHUB_SHA)/ $^
+	sed -i "s/GITHUB_SHA/$(GITHUB_SHA)/" $^
 	touch $@
-.deployed: $(VERSION_FILES)
-	echo deployed $(GITHUB_DEPLOYED)
-	sed -i s/GITHUB_DEPLOYED/$(GITHUB_DEPLOYED)/ $^
+.deployed: $(VERSIONED_FILES)
+	echo deployed $(BUILD_TIME)
+	sed -i "s/BUILD_TIME/$(BUILD_TIME)/" $^
+	touch $@
+.appjson: $(SRCS_DIR)/$(PACKAGE).json
+	echo appid: $(APP_ID)
+	echo name:  $(APP_NAME)
+	sed -i "s/APP_ID/$(APP_ID)/" $^
+	sed -i "s/APP_NAME/$(APP_NAME)/" $^
+	sed -i "s/MODULE/$(MODULE)/" $^
 	touch $@
 
-deploy: soar_null_router.tgz
-	python deploy.py
+deploy: $(PACKAGE).tar
+	python deploy.py $^
 
 venv: requirements-test.txt
+	rm -rf $@
 	python -m venv venv
 	$(VENV_PYTHON) -m pip install -r $^
 
-requirements-test.txt: export PYTEST_SOAR_REPO=git+ssh://git@github.com/edthedev/pytest-splunk-soar-connectors.git
+requirements-test.txt: export PYTEST_SOAR_REPO=git+https://github.com/splunk/pytest-splunk-soar-connectors.git
 requirements-test.txt: requirements-test.in
 	rm -rf $(VENV_REQS)
 	python -m venv $(VENV_REQS)
@@ -52,14 +74,16 @@ requirements-test.txt: requirements-test.in
 	#REMOVE once pytest-splunk-soar-connectors is on pypi
 	sed -i "s;^pytest-splunk-soar-connectors==.*;$(PYTEST_SOAR_REPO);" $@
 
-lint: .lint
+lint: venv .lint
 .lint: $(SRCS) $(TSCS)
 	$(VENV_PYTHON) -m flake8 $?
 	touch $@
 
-static: .static
+static: venv .static
 .static: $(SRCS) $(TSCS)
-	$(VENV_PYTHON) -m mypy $?
+	echo "Code: $(SRCS)"
+	echo "Test: $(TSCS)"
+	$(VENV_PYTHON) -m mypy $^
 	touch $@
 
 test: venv lint static
@@ -68,7 +92,8 @@ test: venv lint static
 clean:
 	rm -rf venv $(VENV_REQS)
 	rm -rf .lint .static
-	rm -f soar_null_router.tgz .tag
+	rm -rf .mypy_cache
+	rm -f $(PACKAGE).tar .tag
 	-find src -type d -name __pycache__ -exec rm -fr "{}" \;
 	git checkout -- $(TAG_FILES)
 
