@@ -4,7 +4,7 @@
 include config.mk
 
 MODULE:=app
-TEST_APP_ID:=5e842053-7364-4a90-a275-2bd838458fef
+TEST_APP_ID:=d9342893-edca-4956-91ba-d6b3ed4b96fb
 TEST_APP_NAME:=Test Box - $(PROD_APP_NAME)
 
 PACKAGE:=app
