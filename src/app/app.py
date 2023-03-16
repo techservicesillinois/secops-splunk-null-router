@@ -32,12 +32,12 @@ class RetVal(tuple):
         return tuple.__new__(RetVal, (val1, val2))
 
 
-class Soar_Null_RouterConnector(BaseConnector):
+class AppConnector(BaseConnector):
 
     def __init__(self):
 
         # Call the BaseConnectors init first
-        super(Soar_Null_RouterConnector, self).__init__()
+        super(AppConnector, self).__init__()
 
         self._state = None
 
@@ -285,7 +285,7 @@ def main():
 
     if username and password:
         try:
-            login_url = Soar_Null_RouterConnector._get_phantom_base_url() \
+            login_url = AppConnector._get_phantom_base_url() \
                 + '/login'
 
             print("Accessing the Login page")
@@ -315,7 +315,7 @@ def main():
         in_json = json.loads(in_json)
         print(json.dumps(in_json, indent=4))
 
-        connector = Soar_Null_RouterConnector()
+        connector = AppConnector()
         connector.print_progress_message = True
 
         if session_id is not None:
