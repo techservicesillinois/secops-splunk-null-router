@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# DO NOT EDIT - Update techservicesillinois/splunk-soar-template first
 
 import base64
 import json
@@ -6,14 +7,14 @@ import os
 import requests
 import sys
 
-file_contents = open('soar_null_router.tgz', 'rb').read()
+file_contents = open(sys.argv[1], 'rb').read()
 encoded_contents = base64.b64encode(file_contents)
 payload = {'app': encoded_contents.decode('ascii')}
 headers = {'ph-auth-token': os.environ['SOAR_TOKEN']}
-url=os.environ['SOAR_URL']
-result = requests.post(url,
-                headers=headers,
-                data=json.dumps(payload))
+hostname = os.environ['SOAR_HOSTNAME']
+result = requests.post(f'https://{hostname}/rest/app',
+                       headers=headers,
+                       data=json.dumps(payload))
 
 print(result.text)
 
