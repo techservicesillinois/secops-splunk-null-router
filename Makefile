@@ -36,7 +36,10 @@ build-test: export APP_NAME=$(TEST_APP_NAME)
 build-test: .appjson $(PACKAGE).tar
 
 src/app/bhr_client.whl:
-	curl -o ./src/app/bhr_client.whl https://files.pythonhosted.org/packages/4a/23/1bbb1bee8f4ee5daf8feffea6bd3a8d58e53f2a7633c6d228836f44bb3c5/bhr_client-1.6-py3-none-any.whl
+	curl -o bhr_client.whl https://files.pythonhosted.org/packages/4a/23/1bbb1bee8f4ee5daf8feffea6bd3a8d58e53f2a7633c6d228836f44bb3c5/bhr_client-1.6-py3-none-any.whl
+	mv bhr_client.whl ./src/app
+	pwd
+	ls
 
 $(PACKAGE).tar: version $(SOAR_SRCS)
 	-find src -type d -name __pycache__ -exec rm -fr "{}" \;
