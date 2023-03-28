@@ -41,7 +41,7 @@ src/app/bhr_client.whl:
 	pwd
 	ls
 
-$(PACKAGE).tar: version $(SOAR_SRCS)
+$(PACKAGE).tar: src/app/bhr_client.whl version $(SOAR_SRCS)
 	-find src -type d -name __pycache__ -exec rm -fr "{}" \;
 	tar cvf $@ -C src $(MODULE)
 
@@ -66,8 +66,8 @@ version: .tag .commit .deployed
 	sed -i "s/MODULE/$(MODULE)/" $^
 	touch $@
 
-deploy: src/app/bhr_client.whl $(PACKAGE).tar
-	python deploy.py $(PACKAGE).tar
+deploy: $(PACKAGE).tar
+	python deploy.py $^
 
 venv: requirements-test.txt
 	rm -rf $@
