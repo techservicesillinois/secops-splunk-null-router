@@ -136,9 +136,10 @@
     }
   ],
   "pip3_dependencies": {
-    "pypi": [
+    "wheel": [
       {
-        "module": "bhr-client==1.6"
+        "module": "bhr-client",
+        "input_file": "bhr_client.whl"
       }
     ]
   },

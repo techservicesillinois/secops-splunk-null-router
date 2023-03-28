@@ -23,4 +23,4 @@ vcrpy
 # TODO: Uncomment after it is available on PyPI:
 #pytest-splunk-soar-connectors
 wheel # required by the pytest-splunk-soar-connectors package
-git+ssh://git@github.com/edthedev/pytest-splunk-soar-connectors.git
+git+ssh://git@github.com/splunk/pytest-splunk-soar-connectors.git
