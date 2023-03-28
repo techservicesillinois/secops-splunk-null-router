@@ -139,7 +139,7 @@
     "wheel": [
       {
         "module": "bhr-client",
-        "input_file": "bhr_client.whl"
+        "input_file": "bhr_client-1.6-py3-none-any.whl"
       }
     ]
   },
