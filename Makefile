@@ -64,7 +64,7 @@ version: .tag .commit .deployed
 	touch $@
 
 deploy: bhr_client.whl $(PACKAGE).tar
-	python deploy.py $^
+	python deploy.py $(PACKAGE).tar
 
 venv: requirements-test.txt
 	rm -rf $@
