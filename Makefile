@@ -35,8 +35,8 @@ build-test: export APP_ID=$(TEST_APP_ID)
 build-test: export APP_NAME=$(TEST_APP_NAME)
 build-test: .appjson $(PACKAGE).tar
 
-bhr_client.whl:
-	curl -o bhr_client.whl https://files.pythonhosted.org/packages/4a/23/1bbb1bee8f4ee5daf8feffea6bd3a8d58e53f2a7633c6d228836f44bb3c5/bhr_client-1.6-py3-none-any.whl
+src/app/bhr_client.whl:
+	curl -o ./src/app/bhr_client.whl https://files.pythonhosted.org/packages/4a/23/1bbb1bee8f4ee5daf8feffea6bd3a8d58e53f2a7633c6d228836f44bb3c5/bhr_client-1.6-py3-none-any.whl
 
 $(PACKAGE).tar: version $(SOAR_SRCS)
 	-find src -type d -name __pycache__ -exec rm -fr "{}" \;
@@ -63,7 +63,7 @@ version: .tag .commit .deployed
 	sed -i "s/MODULE/$(MODULE)/" $^
 	touch $@
 
-deploy: bhr_client.whl $(PACKAGE).tar
+deploy: src/app/bhr_client.whl $(PACKAGE).tar
 	python deploy.py $(PACKAGE).tar
 
 venv: requirements-test.txt
