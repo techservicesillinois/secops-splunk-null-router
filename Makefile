@@ -17,11 +17,20 @@ VERSIONED_FILES:=$(addprefix $(SRCS_DIR)/, $(PACKAGE).json app.py)
 BUILD_TIME:=$(shell date -u +%FT%X.%6NZ)
 VENV_PYTHON:=venv/bin/python
 VENV_REQS:=.requirements.venv
+UNAME:=$(shell uname)
+
+ifeq ($(UNAME), Darwin) 
+# macOS (BSD sed) 
+	SED_INPLACE := -i '' 
+else 
+# Linux and others (GNU sed) 
+	SED_INPLACE := -i 
+endif 
 
 ifeq (tag, $(GITHUB_REF_TYPE))
 	TAG?=$(GITHUB_REF_NAME)
 else
-	TAG?=0.0.0
+	TAG?=$(shell printf "0.0.%d" 0x$(shell git rev-parse --short=6 HEAD))
 endif
 GITHUB_SHA?=$(shell git rev-parse HEAD)
 
@@ -46,22 +55,22 @@ $(PACKAGE).tar: src/app/bhr_client-1.6-py3-none-any.whl version $(SOAR_SRCS)
 version: .tag .commit .deployed
 .tag: $(VERSIONED_FILES)
 	echo version $(TAG)
-	sed -i "s/GITHUB_TAG/$(TAG)/" $^
+	sed $(SED_INPLACE) "s/GITHUB_TAG/$(TAG)/" $^
 	touch $@
 .commit: $(VERSIONED_FILES)
 	echo commit $(GITHUB_SHA)
-	sed -i "s/GITHUB_SHA/$(GITHUB_SHA)/" $^
+	sed $(SED_INPLACE) "s/GITHUB_SHA/$(GITHUB_SHA)/" $^
 	touch $@
 .deployed: $(VERSIONED_FILES)
 	echo deployed $(BUILD_TIME)
-	sed -i "s/BUILD_TIME/$(BUILD_TIME)/" $^
+	sed $(SED_INPLACE) "s/BUILD_TIME/$(BUILD_TIME)/" $^
 	touch $@
 .appjson: $(SRCS_DIR)/$(PACKAGE).json
 	echo appid: $(APP_ID)
 	echo name:  $(APP_NAME)
-	sed -i "s/APP_ID/$(APP_ID)/" $^
-	sed -i "s/APP_NAME/$(APP_NAME)/" $^
-	sed -i "s/MODULE/$(MODULE)/" $^
+	sed $(SED_INPLACE) "s/APP_ID/$(APP_ID)/" $^
+	sed $(SED_INPLACE) "s/APP_NAME/$(APP_NAME)/" $^
+	sed $(SED_INPLACE) "s/MODULE/$(MODULE)/" $^
 	touch $@
 
 deploy: $(PACKAGE).tar
@@ -79,7 +88,7 @@ requirements-test.txt: requirements-test.in
 	$(VENV_REQS)/bin/python -m pip install -r $^
 	$(VENV_REQS)/bin/python -m pip freeze -qqq > $@
 	#REMOVE once pytest-splunk-soar-connectors is on pypi
-	sed -i "s;^pytest-splunk-soar-connectors==.*;$(PYTEST_SOAR_REPO);" $@
+	sed $(SED_INPLACE) "s;^pytest-splunk-soar-connectors==.*;$(PYTEST_SOAR_REPO);" $@
 
 lint: venv .lint
 .lint: $(SRCS) $(TSCS)
