@@ -3,14 +3,11 @@ import json
 import pytest
 
 from unittest.mock import patch, Mock
-
-from phsoar_null_router.soar_null_router_connector import (
-    Soar_Null_RouterConnector
-)
+from app.app import AppConnector
 from bhr_client.rest import Client as BHRClient
 
 
-def _test_connectivity(fake_connector: Soar_Null_RouterConnector):
+def _test_connectivity(fake_connector: AppConnector):
     in_json = {
         "appid": "fceeaac1-8f96-46d6-9c3b-896e363eb004",
         "identifier": "test_connectivity",
@@ -26,18 +23,18 @@ def _test_connectivity(fake_connector: Soar_Null_RouterConnector):
     assert action_result[0]["message"] == "Active connection"
 
 
-@patch("phsoar_null_router.soar_null_router_connector.login_from_env")
-def test_connectivity(mock, fake_connector: Soar_Null_RouterConnector):
+@patch("app.app.login_from_env")
+def test_connectivity(mock, fake_connector: AppConnector):
     mock.return_value = Mock(spec=BHRClient)
     _test_connectivity(fake_connector)
     mock.return_value.query.assert_called_once()
 
 
-def test_connectivity_vcr(cassette, fake_connector: Soar_Null_RouterConnector):
+def test_connectivity_vcr(cassette, fake_connector: AppConnector):
     _test_connectivity(fake_connector)
 
 
-def _test_block(fake_connector: Soar_Null_RouterConnector,
+def _test_block(fake_connector: AppConnector,
                 cidr, source, why, duration, autoscale):
     in_json = {
         "appid": "fceeaac1-8f96-46d6-9c3b-896e363eb004",
@@ -66,8 +63,8 @@ def _test_block(fake_connector: Soar_Null_RouterConnector,
     ('151.45.29.79/32', 'TEST', "Malicious IP!", '100', "false"),
     ('151.45.29.20/32', '', "Malicious IP!", '', "true"),
 ])
-@patch("phsoar_null_router.soar_null_router_connector.login_from_env")
-def test_block(mock, fake_connector: Soar_Null_RouterConnector, cidr, source,
+@patch("app.app.login_from_env")
+def test_block(mock, fake_connector: AppConnector, cidr, source,
                why, duration, autoscale):
     mock.return_value = Mock(spec=BHRClient)
     in_json = _test_block(
@@ -87,7 +84,7 @@ def test_block(mock, fake_connector: Soar_Null_RouterConnector, cidr, source,
     mock.return_value.block.assert_called_once_with(**parameters)
 
 
-def test_block_vcr(cassette, fake_connector: Soar_Null_RouterConnector):
+def test_block_vcr(cassette, fake_connector: AppConnector):
     _test_block(
         fake_connector,
         '151.45.29.79/32',
