@@ -3,10 +3,7 @@ import json
 import pytest
 
 from unittest.mock import patch, Mock
-
-from phsoar_null_router.soar_null_router_connector import (
-    Soar_Null_RouterConnector
-)
+from app.app import AppConnector
 from bhr_client.rest import Client as BHRClient
 
 

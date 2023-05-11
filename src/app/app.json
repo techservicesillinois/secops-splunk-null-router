@@ -1,21 +1,21 @@
 {
-  "appid": "949dc1bb-0ca3-404c-b698-d7d21d94eb94",
-  "name": "NCSA BHR",
+  "appid": "APP_ID",
+  "name": "APP_NAME",
   "description": "Block a CIDR with NCSA BHR",
-  "type": "network security",
-  "product_vendor": "Tech Services Illinois",
+  "type": "Cybersecurity Incident Response",
   "logo": "logo.png",
   "logo_dark": "logo.png",
-  "product_name": "NCSA_BHR",
+  "product_vendor": "NCSA",
+  "product_name": "Blackhole Null Router",
   "python_version": "3",
   "product_version_regex": ".*",
-  "publisher": "Cybersecurity",
-  "license": "Copyright (c) Cybersecurity, 2022",
+  "publisher": "University of Illinois Technology Services Cybersecurity",
+  "license": "NCSA",
   "app_version": "GITHUB_TAG",
-  "utctime_updated": "GITHUB_DEPLOYED",
-  "package_name": "phantom_soar_null_router",
-  "main_module": "soar_null_router_connector.py",
-  "min_phantom_version": "5.3.1.84890",
+  "utctime_updated": "BUILD_TIME",
+  "package_name": "MODULE",
+  "main_module": "app.py",
+  "min_phantom_version": "5.3.3.92213",
   "app_wizard_version": "1.0.0",
   "configuration": {},
   "actions": [
@@ -136,16 +136,12 @@
     }
   ],
   "pip3_dependencies": {
-    "pypi": [
+    "wheel": [
       {
-        "module": "bhr-client==1.6"
+        "module": "bhr-client",
+        "input_file": "bhr_client-1.6-py3-none-any.whl"
       }
     ]
   },
-  "custom_made": false,
-  "directory": "soar_null_router_fceeaac1-8f96-46d6-9c3b-896e363eb004",
-  "version": 1,
-  "appname": "-",
-  "executable": "spawn3",
   "disabled": false
 }
