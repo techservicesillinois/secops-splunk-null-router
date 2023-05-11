@@ -4,9 +4,7 @@ import pytest
 import vcr
 
 from urllib.parse import urlparse
-from phsoar_null_router.soar_null_router_connector import (
-    Soar_Null_RouterConnector
-)
+from app.app import AppConnector
 
 CASSETTE_HOSTNAME = "FOO"
 VCR_RECORD = "VCR_RECORD" in os.environ
@@ -16,8 +14,8 @@ pytest_plugins = ("splunk-soar-connectors")
 
 
 @pytest.fixture
-def connector(monkeypatch) -> Soar_Null_RouterConnector:
-    conn = Soar_Null_RouterConnector()
+def connector(monkeypatch) -> AppConnector:
+    conn = AppConnector()
     if not VCR_RECORD:  # Always use cassette values when using cassette
         monkeypatch.setenv('BHR_HOST', f'https://{CASSETTE_HOSTNAME}')
         monkeypatch.setenv('BHR_TOKEN', 'FAKE_TOKEN')
