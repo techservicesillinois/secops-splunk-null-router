@@ -7,7 +7,7 @@ from app.app import AppConnector
 from bhr_client.rest import Client as BHRClient
 
 
-def _test_connectivity(fake_connector: AppConnector):
+def _test_connectivity(connector: AppConnector):
     in_json = {
         "appid": "fceeaac1-8f96-46d6-9c3b-896e363eb004",
         "identifier": "test_connectivity",
@@ -15,7 +15,7 @@ def _test_connectivity(fake_connector: AppConnector):
     }
 
     # Execute Action
-    action_result_str = fake_connector._handle_action(
+    action_result_str = connector._handle_action(
         json.dumps(in_json), None)
     action_result = json.loads(action_result_str)
 
@@ -24,17 +24,17 @@ def _test_connectivity(fake_connector: AppConnector):
 
 
 @patch("app.app.login_from_env")
-def test_connectivity(mock, fake_connector: AppConnector):
+def test_connectivity(mock, connector: AppConnector):
     mock.return_value = Mock(spec=BHRClient)
-    _test_connectivity(fake_connector)
+    _test_connectivity(connector)
     mock.return_value.query.assert_called_once()
 
 
-def test_connectivity_vcr(cassette, fake_connector: AppConnector):
-    _test_connectivity(fake_connector)
+def test_connectivity_vcr(cassette, connector: AppConnector):
+    _test_connectivity(connector)
 
 
-def _test_block(fake_connector: AppConnector,
+def _test_block(connector: AppConnector,
                 cidr, source, why, duration, autoscale):
     in_json = {
         "appid": "fceeaac1-8f96-46d6-9c3b-896e363eb004",
@@ -50,7 +50,7 @@ def _test_block(fake_connector: AppConnector,
 
     # Execute Action
     dump = json.dumps(in_json)
-    action_result_str = fake_connector._handle_action(dump, None)
+    action_result_str = connector._handle_action(dump, None)
     action_result = json.loads(action_result_str)
 
     # Assertion
@@ -64,11 +64,11 @@ def _test_block(fake_connector: AppConnector,
     ('151.45.29.20/32', '', "Malicious IP!", '', "true"),
 ])
 @patch("app.app.login_from_env")
-def test_block(mock, fake_connector: AppConnector, cidr, source,
+def test_block(mock, connector: AppConnector, cidr, source,
                why, duration, autoscale):
     mock.return_value = Mock(spec=BHRClient)
     in_json = _test_block(
-        fake_connector,
+        connector,
         cidr,
         source,
         why,
@@ -84,9 +84,9 @@ def test_block(mock, fake_connector: AppConnector, cidr, source,
     mock.return_value.block.assert_called_once_with(**parameters)
 
 
-def test_block_vcr(cassette, fake_connector: AppConnector):
+def test_block_vcr(cassette, connector: AppConnector):
     _test_block(
-        fake_connector,
+        connector,
         '151.45.29.79/32',
         'TEST',
         'Malicious IP!',
