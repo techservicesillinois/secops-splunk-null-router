@@ -4,7 +4,6 @@
 include config.mk
 
 MODULE:=app
-TEST_APP_ID:=d9342893-edca-4956-91ba-d6b3ed4b96fb
 TEST_APP_NAME:=Test Box - $(PROD_APP_NAME)
 
 PACKAGE:=app
@@ -13,11 +12,11 @@ TSCS_DIR:=tests
 SOAR_SRCS:=$(shell find $(SRCS_DIR) -type f)
 SRCS:=$(shell find $(SRCS_DIR) -name '*.py')
 TSCS:=$(shell find $(TSCS_DIR) -name '*.py')
-VERSIONED_FILES:=$(addprefix $(SRCS_DIR)/, $(PACKAGE).json app.py)
+VERSIONED_FILES:=$(addprefix $(SRCS_DIR)/, $(PACKAGE).json *.py)
 BUILD_TIME:=$(shell date -u +%FT%X.%6NZ)
 VENV_PYTHON:=venv/bin/python
 VENV_REQS:=.requirements.venv
-UNAME:=$(shell uname)
+UNAME:=$(shell uname -s)
 
 ifeq ($(UNAME), Darwin) 
 # macOS (BSD sed) 
@@ -87,7 +86,7 @@ requirements-test.txt: requirements-test.in
 	python -m venv $(VENV_REQS)
 	$(VENV_REQS)/bin/python -m pip install -r $^
 	$(VENV_REQS)/bin/python -m pip freeze -qqq > $@
-	#REMOVE once pytest-splunk-soar-connectors is on pypi
+# REMOVE once pytest-splunk-soar-connectors is on pypi
 	sed $(SED_INPLACE) "s;^pytest-splunk-soar-connectors==.*;$(PYTEST_SOAR_REPO);" $@
 
 lint: venv .lint
