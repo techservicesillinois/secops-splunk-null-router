@@ -7,6 +7,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.0.2] - 2022-5-22
+
+Fake new release for CI/CD Demo.
+
 ## [1.0.1] - 2022-12-14
 
 ### Updated
