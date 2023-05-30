@@ -22,7 +22,7 @@ from bs4 import BeautifulSoup
 
 __version__ = 'GITHUB_TAG'
 __git_hash__ = 'GITHUB_SHA'
-__deployed__ = 'GITHUB_DEPLOYED'
+__deployed__ = 'BUILD_TIME'
 
 
 class RetVal(tuple):
