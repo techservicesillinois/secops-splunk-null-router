@@ -5,9 +5,9 @@ bhr-client
 # Testing dependencies
 flake8
 mypy
-types-requests
-types-beautifulsoup4
 pytest
+types-beautifulsoup4
+types-requests
 vcrpy
 #⠀⠀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠀⠀
 #⠀⠀⣿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⣿⠀⠀
@@ -23,4 +23,4 @@ vcrpy
 # TODO: Uncomment after it is available on PyPI:
 #pytest-splunk-soar-connectors
 wheel # required by the pytest-splunk-soar-connectors package
-git+ssh://git@github.com/splunk/pytest-splunk-soar-connectors.git
+git+https://github.com/splunk/pytest-splunk-soar-connectors.git
