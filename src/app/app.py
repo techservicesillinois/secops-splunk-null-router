@@ -207,12 +207,11 @@ class AppConnector(BaseConnector):
         action_result = self.add_action_result(ActionResult(param))
 
         args = {}
-        for key in ["cidr", "source", "why", "duration", "autoscale"]:
-            args[key] = phantom.get_req_value(param, key)
+        for key in ["cidr", "source", "why", "duration"]:
+            if key in param:
+                args[key] = param[key]
 
-        if "autoscale" in args:
-            args["autoscale"] = True if args["autoscale"] == "true" else False
-
+        args["autoscale"] = True if param.get("autoscale") == "true" else False
         self._bhr.block(**args)
 
         return action_result.set_status(
