@@ -7,7 +7,30 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-## [1.0.2] - 2022-5-22
+## [5.0.0] - 2023-9-11
+
+### Updated
+
+- Update dependencies for security fix (#45)
+
+## [0.0.0] - 2023-02-17
+
+Do not use unless rolling back from 5.0.0.
+
+### Added
+
+- Add autoscale parameter to null router 'block' action (#22)
+- Add duration, source and why parameters (#16)
+
+### Updated
+
+- Update dependencies for security fix (#26)
+
+## [4.0.1] - [YANKED]
+
+Deleted tag. Do not use.
+
+## [1.0.2] - 2022-5-22 [YANKED]
 
 Fake new release for CI/CD Demo.
 
