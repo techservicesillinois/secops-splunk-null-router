@@ -21,7 +21,6 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.0.0] - 2023-02-17
 
-Untagged production release. Latest as of 2023-9-10.
 Do not use unless rolling back from 5.0.0.
 
 ## [4.0.1] - [YANKED]
