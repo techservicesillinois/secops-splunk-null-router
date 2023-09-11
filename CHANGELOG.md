@@ -42,4 +42,3 @@ Fake new release for CI/CD Demo.
 ### Added
 
 - Initial release
-
