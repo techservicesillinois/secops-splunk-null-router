@@ -230,6 +230,9 @@ class AppConnector(BaseConnector):
         action_id = self.get_action_identifier()
 
         self.debug_print("action_id", self.get_action_identifier())
+        self.debug_print("git_hash", __git_hash__)
+        self.debug_print("version", __version__)
+        self.debug_print("build_time", __deployed__)
 
         if action_id == 'test_connectivity':
             ret_val = self._handle_test_connectivity(param)
