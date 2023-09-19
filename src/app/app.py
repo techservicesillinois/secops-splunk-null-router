@@ -217,6 +217,7 @@ class AppConnector(BaseConnector):
         if "autoscale" in args:
             args["autoscale"] = True if args["autoscale"] == "true" else False
 
+        self.debug_print(f"Block arguments: {args}")
         self._bhr.block(**args)
 
         return action_result.set_status(
