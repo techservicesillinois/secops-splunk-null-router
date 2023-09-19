@@ -23,7 +23,7 @@ git+https://github.com/splunk/pytest-splunk-soar-connectors.git
 python-dateutil==2.8.2
 PyYAML==6.0.1
 requests==2.31.0
-rich==13.5.2
+rich==13.5.3
 six==1.16.0
 soupsieve==2.5
 tomli==2.0.1
@@ -31,7 +31,7 @@ types-beautifulsoup4==4.12.0.6
 types-html5lib==1.1.11.15
 types-requests==2.31.0.2
 types-urllib3==1.26.25.14
-typing_extensions==4.7.1
+typing_extensions==4.8.0
 urllib3==1.26.16
 vcrpy==5.1.0
 wrapt==1.15.0

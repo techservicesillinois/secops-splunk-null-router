@@ -206,17 +206,19 @@ class AppConnector(BaseConnector):
     def _handle_block(self, param):
         action_result = self.add_action_result(ActionResult(param))
 
-        args = {}
-        for key in ["cidr", "source", "why", "duration", "autoscale"]:
-            args[key] = phantom.get_req_value(param, key)
+        bhr_args = {}
+        for key in ["cidr", "why", "source", "duration", "autoscale"]:
+            bhr_args[key] = param.get(key, None)
 
-        if "autoscale" in args:
-            args["autoscale"] = True if args["autoscale"] == "true" else False
+        if "autoscale" in bhr_args:
+            bhr_args["autoscale"] = \
+                True if bhr_args["autoscale"] == "true" else False
 
-        self._bhr.block(**args)
+        self.debug_print(f"Block arguments: {bhr_args}")
+        self._bhr.block(**bhr_args)
 
         return action_result.set_status(
-            phantom.APP_SUCCESS, f"Blocked {args['cidr']}")
+            phantom.APP_SUCCESS, f"Blocked {bhr_args['cidr']}")
 
     def handle_action(self, param):
         ret_val = phantom.APP_SUCCESS
@@ -225,6 +227,9 @@ class AppConnector(BaseConnector):
         action_id = self.get_action_identifier()
 
         self.debug_print("action_id", self.get_action_identifier())
+        self.debug_print("git_hash", __git_hash__)
+        self.debug_print("version", __version__)
+        self.debug_print("build_time", __deployed__)
 
         if action_id == 'test_connectivity':
             ret_val = self._handle_test_connectivity(param)
