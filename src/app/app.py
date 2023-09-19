@@ -208,6 +208,7 @@ class AppConnector(BaseConnector):
 
         args = {}
         for key in ["cidr", "why", "source", "duration", "autoscale"]:
+            # Only pass these keys into _bhr.block 
             args[key] = param.get(key, None)
 
         if "autoscale" in args:
