@@ -218,7 +218,7 @@ class AppConnector(BaseConnector):
             args["autoscale"] = True if args["autoscale"] == "true" else False
 
         self.debug_print(f"Block arguments: {args}")
-        phantom.get_req_value(param, "autoscale")
+        self.debug_print(f"Parameters: {param}")
         self._bhr.block(**args)
 
         return action_result.set_status(
