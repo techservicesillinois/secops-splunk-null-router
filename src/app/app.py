@@ -206,19 +206,19 @@ class AppConnector(BaseConnector):
     def _handle_block(self, param):
         action_result = self.add_action_result(ActionResult(param))
 
-        args = {}
+        bhr_args = {}
         for key in ["cidr", "why", "source", "duration", "autoscale"]:
-            # Only pass these keys into _bhr.block
-            args[key] = param.get(key, None)
+            bhr_args[key] = param.get(key, None)
 
-        if "autoscale" in args:
-            args["autoscale"] = True if args["autoscale"] == "true" else False
+        if "autoscale" in bhr_args:
+            bhr_args["autoscale"] = \
+                True if bhr_args["autoscale"] == "true" else False
 
-        self.debug_print(f"Block arguments: {args}")
-        self._bhr.block(**args)
+        self.debug_print(f"Block arguments: {bhr_args}")
+        self._bhr.block(**bhr_args)
 
         return action_result.set_status(
-            phantom.APP_SUCCESS, f"Blocked {args['cidr']}")
+            phantom.APP_SUCCESS, f"Blocked {bhr_args['cidr']}")
 
     def handle_action(self, param):
         ret_val = phantom.APP_SUCCESS
