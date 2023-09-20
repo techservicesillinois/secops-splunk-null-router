@@ -7,6 +7,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [5.0.1] - 2023-9-19
+
+- Fix `missing autoscale` error (#46, #51)
+
 ## [5.0.0] - 2023-9-11
 
 ### Updated
