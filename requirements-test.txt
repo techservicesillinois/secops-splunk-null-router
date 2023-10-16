@@ -3,7 +3,6 @@ beautifulsoup4==4.12.2
 bhr-client==1.6
 certifi==2023.7.22
 charset-normalizer==3.2.0
-exceptiongroup==1.1.3
 flake8==6.1.0
 idna==3.4
 iniconfig==2.0.0
@@ -17,22 +16,22 @@ packaging==23.1
 pluggy==1.3.0
 pycodestyle==2.11.0
 pyflakes==3.1.0
-Pygments==2.16.1
+pygments==2.16.1
 pytest==7.4.2
-git+https://github.com/splunk/pytest-splunk-soar-connectors.git
+pytest-splunk-soar-connectors @ git+https://github.com/splunk/pytest-splunk-soar-connectors.git
 python-dateutil==2.8.2
-PyYAML==6.0.1
+pyyaml==6.0.1
 requests==2.31.0
 rich==13.5.3
 six==1.16.0
 soupsieve==2.5
-tomli==2.0.1
 types-beautifulsoup4==4.12.0.6
 types-html5lib==1.1.11.15
 types-requests==2.31.0.2
 types-urllib3==1.26.25.14
-typing_extensions==4.8.0
-urllib3==1.26.16
+typing-extensions==4.8.0
+urllib3==1.26.17
 vcrpy==5.1.0
+wheel==0.41.2
 wrapt==1.15.0
 yarl==1.9.2
