@@ -8,6 +8,7 @@ mypy
 pytest
 types-beautifulsoup4
 types-requests
+urllib3==1.26.19
 vcrpy
 #⠀⠀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⠀⠀
 #⠀⠀⣿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⣿⠀⠀
