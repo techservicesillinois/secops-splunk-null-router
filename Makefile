@@ -1,30 +1,22 @@
 # DO NOT EDIT - All project-specific values belong in config.mk!
 
-.PHONY: all build clean lint static
+.PHONY: all autopep8 build build-test clean lint static python-version wheels check_template
 include config.mk
 
-MODULE:=app
-TEST_APP_NAME:=Test Box - $(PROD_APP_NAME)
+TEST_APP_NAME:=Test $(PROD_APP_NAME)
+SOAR_PYTHON_VERSION:=$(shell PYTHONPATH=tests python -c 'from test_python_version import SOAR_PYTHON_VERSION as V; print(f"{V[0]}.{V[1]}")')
 
-PACKAGE:=app
-SRCS_DIR:=src/$(MODULE)
-TSCS_DIR:=tests
-SOAR_SRCS:=$(shell find $(SRCS_DIR) -type f)
-SRCS:=$(shell find $(SRCS_DIR) -name '*.py')
-TSCS:=$(shell find $(TSCS_DIR) -name '*.py')
-VERSIONED_FILES:=$(addprefix $(SRCS_DIR)/, $(PACKAGE).json *.py)
+ifeq (src/app/readme.html, $(wildcard src/app/readme.html))
+	DIST_OPT:=readme.html
+endif
+
+DIST_SRCS:=$(addprefix dist/app/, app.json app.py app.png $(DIST_OPT))
+SRCS:=$(shell find src/app -name '*.py')
+TSCS:=$(shell find tests -name '*.py')
 BUILD_TIME:=$(shell date -u +%FT%X.%6NZ)
 VENV_PYTHON:=venv/bin/python
 VENV_REQS:=.requirements.venv
 UNAME:=$(shell uname -s)
-
-ifeq ($(UNAME), Darwin) 
-# macOS (BSD sed) 
-	SED_INPLACE := -i '' 
-else 
-# Linux and others (GNU sed) 
-	SED_INPLACE := -i 
-endif 
 
 ifeq (tag, $(GITHUB_REF_TYPE))
 	TAG?=$(GITHUB_REF_NAME)
@@ -37,62 +29,66 @@ all: build
 
 build: export APP_ID=$(PROD_APP_ID)
 build: export APP_NAME=$(PROD_APP_NAME)
-build: .appjson $(PACKAGE).tar
+build: app.tar
 
 build-test: export APP_ID=$(TEST_APP_ID)
 build-test: export APP_NAME=$(TEST_APP_NAME)
-build-test: .appjson $(PACKAGE).tar
+build-test: app.tar
 
-src/app/bhr_client-1.6-py3-none-any.whl:
-	curl -o bhr_client-1.6-py3-none-any.whl https://files.pythonhosted.org/packages/4a/23/1bbb1bee8f4ee5daf8feffea6bd3a8d58e53f2a7633c6d228836f44bb3c5/bhr_client-1.6-py3-none-any.whl
-	mv bhr_client-1.6-py3-none-any.whl ./src/app
 
-$(PACKAGE).tar: src/app/bhr_client-1.6-py3-none-any.whl version $(SOAR_SRCS)
-	-find src -type d -name __pycache__ -exec rm -fr "{}" \;
-	tar cvf $@ -C src $(MODULE)
+deps: deps-deploy
+deps-deploy: # Install deps for deploy.py on Github
+	pip install requests
 
-version: .tag .commit .deployed
-.tag: $(VERSIONED_FILES)
-	echo version $(TAG)
-	sed $(SED_INPLACE) "s/GITHUB_TAG/$(TAG)/" $^
-	touch $@
-.commit: $(VERSIONED_FILES)
-	echo commit $(GITHUB_SHA)
-	sed $(SED_INPLACE) "s/GITHUB_SHA/$(GITHUB_SHA)/" $^
-	touch $@
-.deployed: $(VERSIONED_FILES)
-	echo deployed $(BUILD_TIME)
-	sed $(SED_INPLACE) "s/BUILD_TIME/$(BUILD_TIME)/" $^
-	touch $@
-.appjson: $(SRCS_DIR)/$(PACKAGE).json
-	echo appid: $(APP_ID)
-	echo name:  $(APP_NAME)
-	sed $(SED_INPLACE) "s/APP_ID/$(APP_ID)/" $^
-	sed $(SED_INPLACE) "s/APP_NAME/$(APP_NAME)/" $^
-	sed $(SED_INPLACE) "s/MODULE/$(MODULE)/" $^
-	touch $@
+dist: $(DIST_SRCS)
+dist/app:
+	mkdir -p $@
+dist/app/app.py: src/app/app.py dist/app
+	sed "s/GITHUB_TAG/$(TAG)/;s/GITHUB_SHA/$(GITHUB_SHA)/;s/BUILD_TIME/$(BUILD_TIME)/" $< > $@
+dist/app/app.json: src/app/app.json dist/app venv wheels
+    # LC_ALL=C is needed on macOS to avoid illegal byte sequence error
+	LC_ALL=C sed "s/APP_ID/$(APP_ID)/;s/APP_NAME/$(APP_NAME)/;s/GITHUB_TAG/$(TAG)/;s/BUILD_TIME/$(BUILD_TIME)/" $< |\
+	$(VENV_PYTHON) -m phtoolbox deps -o $@ dist/app/wheels
+dist/app/%: src/app/% dist/app
+	cp -r $< $@
 
-deploy: $(PACKAGE).tar
-	python deploy.py $^
+app.tar: $(DIST_SRCS)
+	tar cvf $@ -C dist app
 
-venv: requirements-test.txt
+deploy: app.tar venv
+	$(VENV_PYTHON) -m phtoolbox deploy --file $<
+
+python-version:
+	@echo $(SOAR_PYTHON_VERSION)
+
+.python-version: tests/test_python_version.py
+	pyenv install -s $(SOAR_PYTHON_VERSION)
+	pyenv local $(SOAR_PYTHON_VERSION)
+
+venv: requirements-test.txt .python-version
 	rm -rf $@
 	python -m venv venv
-	$(VENV_PYTHON) -m pip install -r $^
+	$(VENV_PYTHON) -m pip install -r $<
+
+wheels: dist/app dist/app/wheels
+dist/app/wheels: requirements.in
+	pip wheel --no-deps --wheel-dir=$@ -r $^
 
 requirements-test.txt: export PYTEST_SOAR_REPO=git+https://github.com/splunk/pytest-splunk-soar-connectors.git
-requirements-test.txt: requirements-test.in
+requirements-test.txt: requirements-test.in requirements.in
 	rm -rf $(VENV_REQS)
 	python -m venv $(VENV_REQS)
-	$(VENV_REQS)/bin/python -m pip install -r $^
-	$(VENV_REQS)/bin/python -m pip freeze -qqq > $@
-# REMOVE once pytest-splunk-soar-connectors is on pypi
-	sed $(SED_INPLACE) "s;^pytest-splunk-soar-connectors==.*;$(PYTEST_SOAR_REPO);" $@
+	$(VENV_REQS)/bin/python -m pip install -r requirements.in
+	$(VENV_REQS)/bin/python -m pip install -r requirements-test.in
+	$(VENV_REQS)/bin/python -m pip freeze -qqq | \
+	sed "s;^pytest-splunk-soar-connectors==.*;$(PYTEST_SOAR_REPO);" >  $@
+# REMOVE sed line above once pytest-splunk-soar-connectors is on pypi
 
 lint: venv .lint
-.lint: $(SRCS) $(TSCS)
+.lint: $(SRCS) $(TSCS) soar_template
 	$(VENV_PYTHON) -m flake8 $?
 	touch $@
+
 
 static: venv .static
 .static: $(SRCS) $(TSCS)
@@ -101,16 +97,29 @@ static: venv .static
 	$(VENV_PYTHON) -m mypy $^
 	touch $@
 
-test: venv lint static
+unit: venv
 	$(VENV_PYTHON) -m pytest
-	
+
+autopep8: .autopep8
+.autopep8: $(SRCS) $(TSCS) soar_template
+	autopep8 --in-place $?
+	touch $@
+
+# .check_template.d is generated by soar_template
+-include .check_template.d
+check_template: venv .check_template
+.check_template:
+	$(VENV_PYTHON) soar_template -m $@ compare
+	touch $@
+
+test: lint static check_template unit
+
 clean:
 	rm -rf venv $(VENV_REQS)
 	rm -rf .lint .static
 	rm -rf .mypy_cache
-	rm -f $(PACKAGE).tar .tag
-	-find src -type d -name __pycache__ -exec rm -fr "{}" \;
-	git checkout -- $(TAG_FILES)
+	rm -rf dist
+	rm -f app.tar
 
 force-clean: clean
-	rm -f requirements-test.txt
+	rm -f requirements-test.txt .python-version
