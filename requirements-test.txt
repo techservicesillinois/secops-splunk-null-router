@@ -20,7 +20,7 @@ mypy_extensions==1.1.0
 nh3==0.3.1
 packaging==25.0
 pathspec==0.12.1
-phantom-toolbox @ git+https://github.com/techservicesillinois/phantom-toolbox.git@b0c940843a4b9cc74f1ee207e12ad2eb0694c9d7
+phantom-toolbox @ git+https://github.com/techservicesillinois/phantom-toolbox.git@6e7a92af9c36f51f87eabce83cdab73c82968824
 pluggy==1.6.0
 propcache==0.4.1
 pycodestyle==2.14.0
