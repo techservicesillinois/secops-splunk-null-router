@@ -4,7 +4,7 @@ import pytest
 import vcr
 
 from urllib.parse import urlparse
-from app.app import AppConnector  # type: ignore[attr-defined]
+from app import AppConnector  # type: ignore[attr-defined]
 
 CASSETTE_HOSTNAME = "FOO"
 VCR_RECORD = "VCR_RECORD" in os.environ
