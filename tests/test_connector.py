@@ -3,8 +3,8 @@ import json
 import pytest
 
 from unittest.mock import patch, Mock
-from app.app import AppConnector
-from bhr_client.rest import Client as BHRClient
+from app.app import AppConnector  # type: ignore[attr-defined]
+from bhr_client.rest import Client as BHRClient  # type: ignore
 
 
 def _test_connectivity(connector: AppConnector):
