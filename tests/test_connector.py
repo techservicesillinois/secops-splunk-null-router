@@ -3,8 +3,8 @@ import json
 import pytest
 
 from unittest.mock import patch, Mock
-from app.app import AppConnector
-from bhr_client.rest import Client as BHRClient
+from app import AppConnector  # type: ignore[attr-defined]
+from bhr_client.rest import Client as BHRClient  # type: ignore
 
 
 def _test_connectivity(connector: AppConnector):
@@ -23,7 +23,7 @@ def _test_connectivity(connector: AppConnector):
     assert action_result[0]["message"] == "Active connection"
 
 
-@patch("app.app.login_from_env")
+@patch("app.login_from_env")
 def test_connectivity(mock, connector: AppConnector):
     mock.return_value = Mock(spec=BHRClient)
     _test_connectivity(connector)
@@ -63,7 +63,7 @@ def _test_block(connector: AppConnector,
     ('151.45.29.79/32', 'TEST', "Malicious IP!", '100', "false"),
     ('151.45.29.20/32', '', "Malicious IP!", '', "true"),
 ])
-@patch("app.app.login_from_env")
+@patch("app.login_from_env")
 def test_block(mock, connector: AppConnector, cidr, source,
                why, duration, autoscale):
     mock.return_value = Mock(spec=BHRClient)

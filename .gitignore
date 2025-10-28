@@ -1,3 +1,18 @@
+# DO NOT EDIT - Update techservicesillinois/splunk-soar-template first
+# SOAR
+*.ini
+*.tar
+*.tgz
+*.vscode
+
+# Our Makefile
+.autopep8
+.check_template
+.check_template.d
+.lint
+.requirements.venv
+.static
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -26,8 +41,6 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-.tag
-.vscode
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -52,8 +65,6 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
-.lint
-.static
 
 # Translations
 *.mo
@@ -131,10 +142,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-# don't check in tarballs!
-*.tgz
-
-# build artifacts
-ssh
-.requirements.venv

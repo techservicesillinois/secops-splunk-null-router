@@ -7,7 +7,7 @@
   "logo_dark": "logo.png",
   "product_vendor": "NCSA",
   "product_name": "Blackhole Null Router",
-  "python_version": "3",
+  "python_version": "3.13",
   "product_version_regex": ".*",
   "publisher": "University of Illinois Technology Services Cybersecurity",
   "license": "NCSA",
@@ -135,13 +135,5 @@
       "versions": "EQ(*)"
     }
   ],
-  "pip3_dependencies": {
-    "wheel": [
-      {
-        "module": "bhr-client",
-        "input_file": "bhr_client-1.6-py3-none-any.whl"
-      }
-    ]
-  },
   "disabled": false
 }
