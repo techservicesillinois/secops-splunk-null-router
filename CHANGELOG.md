@@ -9,7 +9,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [5.1.0] - 2026-02-11
 
-- Updates to match SOAR template (#65) (#63)
+- Update to support Python 3.13 and match SOAR template (#65) (#63)
 - Update requests package version (#60)
 - Upgrade Github Actions to v4 (#59)
 - Add detect secrets config (#58)
