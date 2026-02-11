@@ -7,6 +7,15 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [5.1.0] - 2026-02-11
+
+- Updates to match SOAR template (#65) (#63)
+- Update requests package version (#60)
+- Upgrade Github Actions to v4 (#59)
+- Add detect secrets config (#58)
+- Update to resolve dependabot alerts (#57)
+- Bump urllib3 from 1.26.16 to 1.26.17 (#55)
+
 ## [5.0.1] - 2023-9-19
 
 - Fix `missing autoscale` error (#46, #51)
