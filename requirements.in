@@ -1,3 +1,4 @@
 # Production dependencies are added to app.json
-git+https://github.com/techservicesillinois/phantom-toolbox.git
 bhr-client
+git+https://github.com/techservicesillinois/phantom-toolbox.git
+git+https://github.com/techservicesillinois/template-repo-sync.git
